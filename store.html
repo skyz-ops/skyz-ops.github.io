@@ -5,178 +5,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redemption Game Store</title>
     <style>
+        :root {
+            --primary: #ffcc00;
+            --dark: #0f3460;
+            --darker: #1a1a2e;
+            --light: #16213e;
+            --success: #00ff88;
+            --danger: #ff5555;
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #1a1a2e;
+            background-color: var(--darker);
             color: white;
-            max-width: 800px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
+        
         .header {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
         }
-        .balance {
-            background-color: #0f3460;
+        
+        .user-info {
+            background-color: var(--dark);
             padding: 15px;
             border-radius: 8px;
+            margin-bottom: 30px;
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-        }
-        .item-card {
-            background-color: #16213e;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #ffcc00;
-        }
-        .item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 15px;
-        }
-        .item-content {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
-        .item-info {
-            flex-grow: 1;
-        }
-        .item-name {
-            font-weight: bold;
             font-size: 1.1em;
-            margin-bottom: 5px;
         }
-        .item-price {
-            color: #00ff88;
-        }
-        .buy-btn {
-            background-color: #ffcc00;
-            color: black;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            min-width: 100px;
-        }
-        .buy-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        .inventory {
-            margin-top: 40px;
-            background-color: #0f3460;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .inventory-item {
-            padding: 10px;
-            margin: 5px 0;
-            border-bottom: 1px solid #1a1a2e;
-            display: flex;
-            align-items: center;
-        }
-        .inventory-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        .logout-btn {
-            background-color: #ff5555;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 20px;
-            display: block;
-            width: 100%;
-        }
-        .admin-btn {
+        
+        .admin-panel-link {
+            display: inline-block;
             background-color: #4CAF50;
             color: white;
             padding: 10px 15px;
-            border-radius: 4px;
+            border-radius: 5px;
             text-decoration: none;
-            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            border-bottom: 1px solid var(--primary);
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .item-card {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .item-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .item-price {
+            color: var(--success);
+            margin: 10px 0;
+        }
+        
+        .item-duration {
+            color: #aaa;
             margin-bottom: 15px;
+        }
+        
+        .buy-btn {
+            background-color: var(--primary);
+            color: black;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .buy-btn:hover {
+            background-color: #e6b800;
+        }
+        
+        .buy-btn:disabled {
+            background-color: #666;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .inventory-container {
+            background-color: var(--dark);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .inventory-item {
+            padding: 10px;
+            border-bottom: 1px solid #2a2a4a;
+        }
+        
+        .logout-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: #e04d4d;
+        }
+        
+        @media (max-width: 768px) {
+            .items-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Redemption Game Store</h1>
-        <p>Tukarkan WebCoin-mu untuk item eksklusif!</p>
-    </div>
-
-    <div class="balance">
-        Selamat datang, <strong id="usernameDisplay"></strong>! | 
-        Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
-    </div>
-
-    <div id="adminLinkContainer"></div>
-
-    <h2>Item yang Tersedia</h2>
-    
-    <!-- Item 1 -->
-    <div class="item-card">
-        <div class="item-content">
-            <img src="https://i.ibb.co/zhBKDmcX/crb-berserker.png" alt="Kriss S.V CRB Berserker" class="item-image">
-            <div class="item-info">
-                <div class="item-name">Kriss S.V CRB Berserker</div>
-                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div>Durasi: Permanent</div>
-            </div>
+    <div class="container">
+        <div class="header">
+            <h1>REDEMPTION GAME STORE</h1>
+            <p>Tukarkan WebCoin-mu untuk item eksklusif!</p>
         </div>
-        <button class="buy-btn" data-id="1" data-price="50000">Beli Sekarang</button>
-    </div>
-    
-    <!-- Item 2 -->
-    <div class="item-card">
-        <div class="item-content">
-            <img src="https://i.ibb.co/fYVJTyht/t77-berserker.png" alt="TT7 Berserker" class="item-image">
-            <div class="item-info">
+
+        <div class="user-info">
+            Selamat datang, <strong id="usernameDisplay"></strong>! | 
+            Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
+        </div>
+
+        <div id="adminLinkContainer"></div>
+
+        <h2 class="section-title">Item yang Tersedia</h2>
+        
+        <div class="items-container">
+            <!-- Item 1 -->
+            <div class="item-card">
+                <div class="item-name">Kriss SV CRB Berserker</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div class="item-duration">Durasi: Permanent</div>
+                <button class="buy-btn" data-id="1" data-price="50000">Beli Sekarang</button>
+            </div>
+            
+            <!-- Item 2 -->
+            <div class="item-card">
                 <div class="item-name">TT7 Berserker</div>
                 <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div>Durasi: Permanent</div>
+                <div class="item-duration">Durasi: Permanent</div>
+                <button class="buy-btn" data-id="2" data-price="50000">Beli Sekarang</button>
             </div>
-        </div>
-        <button class="buy-btn" data-id="2" data-price="50000">Beli Sekarang</button>
-    </div>
-    
-    <!-- Item 3 -->
-    <div class="item-card">
-        <div class="item-content">
-            <img src="https://i.ibb.co/gMxNvrC4/t77ninja.png" alt="TT7 Shinobi" class="item-image">
-            <div class="item-info">
+            
+            <!-- Item 3 -->
+            <div class="item-card">
                 <div class="item-name">TT7 Shinobi</div>
                 <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div>Durasi: Permanent</div>
+                <div class="item-duration">Durasi: Permanent</div>
+                <button class="buy-btn" data-id="3" data-price="50000">Beli Sekarang</button>
             </div>
         </div>
-        <button class="buy-btn" data-id="3" data-price="50000">Beli Sekarang</button>
-    </div>
 
-    <div class="inventory">
-        <h2>Inventory Anda</h2>
-        <div id="userInventory">
-            <p>Anda belum memiliki item.</p>
+        <div class="inventory-container">
+            <h2 class="section-title">Inventory Anda</h2>
+            <div id="userInventory">
+                <div class="inventory-item">Anda belum memiliki item.</div>
+            </div>
         </div>
-    </div>
 
-    <button id="logoutBtn" class="logout-btn">Logout</button>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
 
     <script>
         // Inisialisasi data jika belum ada
@@ -196,7 +222,7 @@
         if (!currentUser) {
             window.location.href = "index.html";
         } else {
-            // Pastikan data user selalu update dari database
+            // Perbarui data user dari database
             const users = JSON.parse(localStorage.getItem('users'));
             const updatedUser = users.find(u => u.username === currentUser.username);
             if (updatedUser) {
@@ -208,7 +234,7 @@
         // Tampilkan admin link jika user adalah admin
         if (currentUser.username === 'admin') {
             document.getElementById('adminLinkContainer').innerHTML = 
-                '<a href="admin.html" class="admin-btn">Admin Panel</a>';
+                '<a href="admin.html" class="admin-panel-link">Admin Panel</a>';
         }
 
         // Update informasi user
@@ -220,32 +246,20 @@
             const inventoryElement = document.getElementById('userInventory');
             
             if (!currentUser.inventory || currentUser.inventory.length === 0) {
-                inventoryElement.innerHTML = '<p>Anda belum memiliki item.</p>';
+                inventoryElement.innerHTML = '<div class="inventory-item">Anda belum memiliki item.</div>';
                 return;
             }
             
             let inventoryHTML = '';
             currentUser.inventory.forEach(item => {
                 let itemName = '';
-                let itemImage = '';
-                
-                if (item.id === 1) {
-                    itemName = 'Kriss S.V CRB Berserker';
-                    itemImage = 'https://i.ibb.co/zhBKDmcX/crb-berserker.png';
-                } else if (item.id === 2) {
-                    itemName = 'T77 Berserker';
-                    itemImage = 'https://i.ibb.co/fYVJTyht/t77-berserker.png';
-                } else if (item.id === 3) {
-                    itemName = 'T77 Shinobi';
-                    itemImage = 'https://i.ibb.co/gMxNvrC4/t77ninja.png';
-                }
+                if (item.id === 1) itemName = 'Kriss SV CRB Berserker';
+                else if (item.id === 2) itemName = 'TT7 Berserker';
+                else if (item.id === 3) itemName = 'TT7 Shinobi';
                 
                 inventoryHTML += `
                     <div class="inventory-item">
-                        <img src="${itemImage}" alt="${itemName}">
-                        <div>
-                            <strong>${itemName}</strong> - Dibeli pada: ${new Date(item.purchaseDate).toLocaleString()}
-                        </div>
+                        ${itemName} - Dibeli pada: ${new Date(item.purchaseDate).toLocaleString()}
                     </div>
                 `;
             });
@@ -318,9 +332,9 @@
                 const itemPrice = e.target.getAttribute('data-price');
                 let itemName = '';
                 
-                if (itemId === '1') itemName = 'Kriss S.V CRB Berserker';
-                else if (itemId === '2') itemName = 'T77 Berserker';
-                else if (itemId === '3') itemName = 'T77 Shinobi';
+                if (itemId === '1') itemName = 'Kriss SV CRB Berserker';
+                else if (itemId === '2') itemName = 'TT7 Berserker';
+                else if (itemId === '3') itemName = 'TT7 Shinobi';
                 
                 if (confirm(`Apakah Anda yakin ingin membeli ${itemName} seharga ${itemPrice} WebCoin?`)) {
                     buyItem(itemId, itemPrice, itemName);
