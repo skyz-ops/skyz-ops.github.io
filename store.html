@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redemption Game - Toko WebCoin</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .balance {
+            background-color: #0f3460;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .item-card {
+            background-color: #16213e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #ffcc00;
+        }
+        .item-info {
+            flex-grow: 1;
+        }
+        .item-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .item-price {
+            color: #00ff88;
+        }
+        .buy-btn {
+            background-color: #ffcc00;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 100px;
+        }
+        .buy-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .inventory {
+            margin-top: 40px;
+        }
+        .inventory-item {
+            background-color: #0f3460;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .logout-btn {
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Redemption Game Store</h1>
+        <p>Tukarkan WebCoin-mu untuk item eksklusif!</p>
+    </div>
+
+    <div class="balance">
+        Selamat datang, <span id="usernameDisplay"></span>! | 
+        Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
+    </div>
+
+    <h2>Item yang Tersedia</h2>
+    <div id="itemList">
+        <!-- Item akan dimuat melalui JavaScript -->
+    </div>
+
+    <div class="inventory">
+        <h2>Inventory Anda</h2>
+        <div id="userInventory">
+            <!-- Item yang sudah dibeli akan muncul di sini -->
+        </div>
+    </div>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+
+    <script>
+        // Periksa apakah user sudah login
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = "index.html";
+        }
+
+        // Data item yang tersedia
+        const availableItems = [
+            { id: 1, name: "Kriss S.V CRB Berserker", price: 50000, duration: "Permanent" },
+            { id: 2, name: "177 Berserker", price: 50000, duration: "Permanent" },
+            { id: 3, name: "177 Shinobi", price: 75000, duration: "Permanent" },
+            { id: 4, name: "T77 Shinobi", price: 60000, duration: "Permanent" }
+        ];
+
+        // Fungsi untuk memperbarui tampilan
+        function updateUI() {
+            // Tampilkan username
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            
+            // Perbarui saldo
+            document.getElementById('webcoinBalance').textContent = currentUser.webcoinBalance;
+            
+            // Perbarui daftar item
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            
+            availableItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item-card';
+                
+                const alreadyOwned = currentUser.inventory.some(ownedItem => ownedItem.id === item.id);
+                
+                itemElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">Harga: ${item.price} WebCoin</div>
+                        <div>Durasi: ${item.duration}</div>
+                    </div>
+                    <button class="buy-btn" 
+                            data-id="${item.id}" 
+                            data-price="${item.price}"
+                            ${alreadyOwned || currentUser.webcoinBalance < item.price ? 'disabled' : ''}>
+                        ${alreadyOwned ? 'Sudah Dimiliki' : 'Beli Sekarang'}
+                    </button>
+                `;
+                
+                itemList.appendChild(itemElement);
+            });
+            
+            // Perbarui inventory
+            const inventoryElement = document.getElementById('userInventory');
+            inventoryElement.innerHTML = currentUser.inventory.length > 0 
+                ? currentUser.inventory.map(item => {
+                    const itemData = availableItems.find(i => i.id === item.id);
+                    return `
+                        <div class="inventory-item">
+                            <strong>${itemData.name}</strong> - Dibeli pada: ${new Date(item.purchaseDate).toLocaleString()}
+                        </div>
+                    `;
+                }).join('')
+                : '<p>Anda belum memiliki item.</p>';
+        }
+        
+        // Fungsi untuk membeli item
+        function buyItem(itemId, itemPrice, itemName) {
+            if (currentUser.webcoinBalance >= itemPrice) {
+                // Kurangi saldo
+                currentUser.webcoinBalance -= itemPrice;
+                
+                // Tambahkan ke inventory
+                currentUser.inventory.push({
+                    id: itemId,
+                    purchaseDate: new Date().toISOString()
+                });
+                
+                // Update data di localStorage
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userIndex = users.findIndex(u => u.username === currentUser.username);
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                alert(`Anda berhasil membeli ${itemName}!`);
+                updateUI();
+            } else {
+                alert('Saldo WebCoin tidak cukup!');
+            }
+        }
+        
+        // Event listener untuk tombol beli
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('buy-btn') && !e.target.disabled) {
+                const itemId = parseInt(e.target.getAttribute('data-id'));
+                const itemPrice = parseInt(e.target.getAttribute('data-price'));
+                const itemName = availableItems.find(item => item.id === itemId).name;
+                
+                if (confirm(`Apakah Anda yakin ingin membeli ${itemName} seharga ${itemPrice} WebCoin?`)) {
+                    buyItem(itemId, itemPrice, itemName);
+                }
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            window.location.href = "index.html";
+        });
+        
+        // Inisialisasi pertama kali
+        updateUI();
+    </script>
+</body>
+</html>
