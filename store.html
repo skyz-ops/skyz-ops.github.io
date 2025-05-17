@@ -83,6 +83,16 @@
             display: block;
             width: 100%;
         }
+        .admin-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 10px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -95,6 +105,14 @@
         Selamat datang, <strong id="usernameDisplay"></strong>! | 
         Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
     </div>
+
+    <!-- Admin Panel Link (only visible for admin) -->
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.username === 'admin') {
+            document.write('<a href="admin.html" class="admin-btn">Admin Panel</a>');
+        }
+    </script>
 
     <h2>Item yang Tersedia</h2>
     
