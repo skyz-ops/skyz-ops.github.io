@@ -72,6 +72,21 @@
             display: block;
             width: 100%;
         }
+        .home-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -135,6 +150,11 @@
         }
         .balance-action {
             flex: 1;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
     </style>
 </head>
@@ -218,7 +238,10 @@
         </table>
     </div>
 
-    <button id="logoutBtn" class="logout-btn">Logout</button>
+    <div class="button-group">
+        <a href="index.html" class="home-btn">Kembali ke Halaman Utama</a>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
 
     <script>
         // Inisialisasi data jika belum ada
