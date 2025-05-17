@@ -89,9 +89,8 @@
             padding: 10px 15px;
             border-radius: 4px;
             text-decoration: none;
-            margin-right: 10px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -106,13 +105,7 @@
         Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
     </div>
 
-    <!-- Admin Panel Link (only visible for admin) -->
-    <script>
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser && currentUser.username === 'admin') {
-            document.write('<a href="admin.html" class="admin-btn">Admin Panel</a>');
-        }
-    </script>
+    <div id="adminLinkContainer"></div>
 
     <h2>Item yang Tersedia</h2>
     
@@ -129,7 +122,7 @@
     <!-- Item 2 -->
     <div class="item-card">
         <div class="item-info">
-            <div class="item-name">177 Berserker</div>
+            <div class="item-name">T77 Berserker</div>
             <div class="item-price">Harga: 💬 50,000 WebCoin</div>
             <div>Durasi: Permanent</div>
         </div>
@@ -139,7 +132,7 @@
     <!-- Item 3 -->
     <div class="item-card">
         <div class="item-info">
-            <div class="item-name">177 Shinobi</div>
+            <div class="item-name">T77 Shinobi</div>
             <div class="item-price">Harga: 💬 50,000 WebCoin</div>
             <div>Durasi: Permanent</div>
         </div>
@@ -156,10 +149,36 @@
     <button id="logoutBtn" class="logout-btn">Logout</button>
 
     <script>
+        // Inisialisasi data jika belum ada
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([
+                { 
+                    username: "admin", 
+                    password: "admin123",
+                    webcoinBalance: 100000,
+                    inventory: []
+                }
+            ]));
+        }
+
         // Periksa apakah user sudah login
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
             window.location.href = "index.html";
+        } else {
+            // Pastikan data user selalu update dari database
+            const users = JSON.parse(localStorage.getItem('users'));
+            const updatedUser = users.find(u => u.username === currentUser.username);
+            if (updatedUser) {
+                currentUser = updatedUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+        }
+
+        // Tampilkan admin link jika user adalah admin
+        if (currentUser.username === 'admin') {
+            document.getElementById('adminLinkContainer').innerHTML = 
+                '<a href="admin.html" class="admin-btn">Admin Panel</a>';
         }
 
         // Update informasi user
@@ -170,7 +189,7 @@
         function updateInventory() {
             const inventoryElement = document.getElementById('userInventory');
             
-            if (currentUser.inventory.length === 0) {
+            if (!currentUser.inventory || currentUser.inventory.length === 0) {
                 inventoryElement.innerHTML = '<p>Anda belum memiliki item.</p>';
                 return;
             }
@@ -178,9 +197,9 @@
             let inventoryHTML = '';
             currentUser.inventory.forEach(item => {
                 let itemName = '';
-                if (item.id === '1') itemName = 'Kriss S.V CRB Berserker';
-                else if (item.id === '2') itemName = '177 Berserker';
-                else if (item.id === '3') itemName = '177 Shinobi';
+                if (item.id === 1) itemName = 'Kriss S.V CRB Berserker';
+                else if (item.id === 2) itemName = 'T77 Berserker';
+                else if (item.id === 3) itemName = 'T77 Shinobi';
                 
                 inventoryHTML += `
                     <div class="inventory-item">
@@ -192,11 +211,12 @@
             inventoryElement.innerHTML = inventoryHTML;
         }
 
-        // Update tombol beli berdasarkan inventory
+        // Update tombol beli
         function updateBuyButtons() {
             document.querySelectorAll('.buy-btn').forEach(button => {
-                const itemId = button.getAttribute('data-id');
-                const alreadyOwned = currentUser.inventory.some(item => item.id === itemId);
+                const itemId = parseInt(button.getAttribute('data-id'));
+                const alreadyOwned = currentUser.inventory && 
+                    currentUser.inventory.some(item => item.id === itemId);
                 
                 if (alreadyOwned) {
                     button.textContent = 'Sudah Dimiliki';
@@ -211,9 +231,17 @@
 
         // Fungsi untuk membeli item
         function buyItem(itemId, itemPrice, itemName) {
+            itemId = parseInt(itemId);
+            itemPrice = parseInt(itemPrice);
+            
             if (currentUser.webcoinBalance >= itemPrice) {
                 // Kurangi saldo
                 currentUser.webcoinBalance -= itemPrice;
+                
+                // Inisialisasi inventory jika belum ada
+                if (!currentUser.inventory) {
+                    currentUser.inventory = [];
+                }
                 
                 // Tambahkan ke inventory
                 currentUser.inventory.push({
@@ -224,8 +252,10 @@
                 // Update data di localStorage
                 const users = JSON.parse(localStorage.getItem('users'));
                 const userIndex = users.findIndex(u => u.username === currentUser.username);
-                users[userIndex] = currentUser;
-                localStorage.setItem('users', JSON.stringify(users));
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 
                 alert(`Anda berhasil membeli ${itemName}!`);
@@ -243,12 +273,12 @@
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('buy-btn') && !e.target.disabled) {
                 const itemId = e.target.getAttribute('data-id');
-                const itemPrice = parseInt(e.target.getAttribute('data-price'));
+                const itemPrice = e.target.getAttribute('data-price');
                 let itemName = '';
                 
                 if (itemId === '1') itemName = 'Kriss S.V CRB Berserker';
-                else if (itemId === '2') itemName = '177 Berserker';
-                else if (itemId === '3') itemName = '177 Shinobi';
+                else if (itemId === '2') itemName = 'T77 Berserker';
+                else if (itemId === '3') itemName = 'T77 Shinobi';
                 
                 if (confirm(`Apakah Anda yakin ingin membeli ${itemName} seharga ${itemPrice} WebCoin?`)) {
                     buyItem(itemId, itemPrice, itemName);
