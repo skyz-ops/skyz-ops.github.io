@@ -35,6 +35,18 @@
             align-items: center;
             border-left: 4px solid #ffcc00;
         }
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        .item-content {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
         .item-info {
             flex-grow: 1;
         }
@@ -70,6 +82,15 @@
             padding: 10px;
             margin: 5px 0;
             border-bottom: 1px solid #1a1a2e;
+            display: flex;
+            align-items: center;
+        }
+        .inventory-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
         }
         .logout-btn {
             background-color: #ff5555;
@@ -111,30 +132,39 @@
     
     <!-- Item 1 -->
     <div class="item-card">
-        <div class="item-info">
-            <div class="item-name">Kriss S.V CRB Berserker</div>
-            <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-            <div>Durasi: Permanent</div>
+        <div class="item-content">
+            <img src="https://pbredemption.site/assets/shop-item/crb%20berserker.png" alt="Kriss S.V CRB Berserker" class="item-image">
+            <div class="item-info">
+                <div class="item-name">Kriss S.V CRB Berserker</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Durasi: Permanent</div>
+            </div>
         </div>
         <button class="buy-btn" data-id="1" data-price="50000">Beli Sekarang</button>
     </div>
     
     <!-- Item 2 -->
     <div class="item-card">
-        <div class="item-info">
-            <div class="item-name">T77 Berserker</div>
-            <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-            <div>Durasi: Permanent</div>
+        <div class="item-content">
+            <img src="https://pbredemption.site/assets/shop-item/t77%20berserker.png" alt="TT7 Berserker" class="item-image">
+            <div class="item-info">
+                <div class="item-name">TT7 Berserker</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Durasi: Permanent</div>
+            </div>
         </div>
         <button class="buy-btn" data-id="2" data-price="50000">Beli Sekarang</button>
     </div>
     
     <!-- Item 3 -->
     <div class="item-card">
-        <div class="item-info">
-            <div class="item-name">T77 Shinobi</div>
-            <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-            <div>Durasi: Permanent</div>
+        <div class="item-content">
+            <img src="https://pbredemption.site/assets/shop-item/t77ninja.png" alt="TT7 Shinobi" class="item-image">
+            <div class="item-info">
+                <div class="item-name">TT7 Shinobi</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Durasi: Permanent</div>
+            </div>
         </div>
         <button class="buy-btn" data-id="3" data-price="50000">Beli Sekarang</button>
     </div>
@@ -197,13 +227,25 @@
             let inventoryHTML = '';
             currentUser.inventory.forEach(item => {
                 let itemName = '';
-                if (item.id === 1) itemName = 'Kriss S.V CRB Berserker';
-                else if (item.id === 2) itemName = 'T77 Berserker';
-                else if (item.id === 3) itemName = 'T77 Shinobi';
+                let itemImage = '';
+                
+                if (item.id === 1) {
+                    itemName = 'Kriss S.V CRB Berserker';
+                    itemImage = 'https://pbredemption.site/assets/shop-item/crb%20berserker.png';
+                } else if (item.id === 2) {
+                    itemName = 'T77 Berserker';
+                    itemImage = 'https://pbredemption.site/assets/shop-item/t77%20berserker.png';
+                } else if (item.id === 3) {
+                    itemName = 'T77 Shinobi';
+                    itemImage = 'https://pbredemption.site/assets/shop-item/t77ninja.png';
+                }
                 
                 inventoryHTML += `
                     <div class="inventory-item">
-                        <strong>${itemName}</strong> - Dibeli pada: ${new Date(item.purchaseDate).toLocaleString()}
+                        <img src="${itemImage}" alt="${itemName}">
+                        <div>
+                            <strong>${itemName}</strong> - Dibeli pada: ${new Date(item.purchaseDate).toLocaleString()}
+                        </div>
                     </div>
                 `;
             });
