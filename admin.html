@@ -31,12 +31,9 @@
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         .user-info {
-            flex-grow: 1;
+            margin-bottom: 10px;
         }
         .user-name {
             font-weight: bold;
@@ -54,9 +51,9 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            margin-left: 10px;
+            margin-right: 10px;
         }
-        .deduct-input {
+        .action-input {
             padding: 8px;
             border-radius: 4px;
             border: none;
@@ -75,21 +72,6 @@
             display: block;
             width: 100%;
         }
-        .redeem-section {
-            margin-top: 20px;
-        }
-        .redeem-codes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .redeem-code {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -102,6 +84,7 @@
             padding: 8px;
             border-radius: 4px;
             border: none;
+            margin-bottom: 10px;
         }
         .btn-primary {
             background-color: #4CAF50;
@@ -111,6 +94,10 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+        }
+        .btn-danger {
+            background-color: #ff5555;
+            color: white;
         }
         table {
             width: 100%;
@@ -128,12 +115,33 @@
         tr:hover {
             background-color: #16213e;
         }
+        .message {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .error {
+            background-color: #ffdddd;
+            color: #ff0000;
+        }
+        .success {
+            background-color: #ddffdd;
+            color: #00aa00;
+        }
+        .balance-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .balance-action {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Admin Panel - Redemption Game Store</h1>
-        <p>Kelola pengguna dan kode redeem</p>
+        <p>Kelola pengguna, saldo WebCoin, dan kode redeem</p>
     </div>
 
     <div class="admin-section">
@@ -151,15 +159,31 @@
                 <option value="">-- Pilih Pengguna --</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="deductAmount">Jumlah Pengurangan:</label>
-            <input type="number" id="deductAmount" class="form-control" placeholder="Masukkan jumlah">
+        
+        <div class="balance-actions">
+            <div class="balance-action">
+                <h3>Tambahkan Saldo</h3>
+                <div class="form-group">
+                    <label for="addAmount">Jumlah Penambahan:</label>
+                    <input type="number" id="addAmount" class="form-control" placeholder="Masukkan jumlah" min="1">
+                </div>
+                <button id="addBtn" class="btn-primary">Tambah Saldo</button>
+            </div>
+            
+            <div class="balance-action">
+                <h3>Kurangi Saldo</h3>
+                <div class="form-group">
+                    <label for="deductAmount">Jumlah Pengurangan:</label>
+                    <input type="number" id="deductAmount" class="form-control" placeholder="Masukkan jumlah" min="1">
+                </div>
+                <button id="deductBtn" class="btn-primary btn-danger">Kurangi Saldo</button>
+            </div>
         </div>
-        <button id="deductBtn" class="btn-primary">Kurangi Saldo</button>
-        <div id="deductMessage" style="margin-top: 10px;"></div>
+        
+        <div id="balanceMessage" class="message"></div>
     </div>
 
-    <div class="admin-section redeem-section">
+    <div class="admin-section">
         <h2>Kelola Kode Redeem</h2>
         
         <h3>Buat Kode Baru</h3>
@@ -176,6 +200,7 @@
             </select>
         </div>
         <button id="addCodeBtn" class="btn-primary">Tambah Kode</button>
+        <div id="addCodeMessage" class="message"></div>
         
         <h3 style="margin-top: 20px;">Kode Redeem Aktif</h3>
         <table>
@@ -196,10 +221,44 @@
     <button id="logoutBtn" class="logout-btn">Logout</button>
 
     <script>
+        // Inisialisasi data jika belum ada
+        function initializeData() {
+            if (!localStorage.getItem('users')) {
+                const defaultUsers = [
+                    { 
+                        username: "admin", 
+                        password: "admin123",
+                        webcoinBalance: 100000,
+                        inventory: [],
+                        usedCodes: []
+                    },
+                    {
+                        username: "user1",
+                        password: "user123",
+                        webcoinBalance: 50000,
+                        inventory: [],
+                        usedCodes: []
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(defaultUsers));
+            }
+
+            if (!localStorage.getItem('redeemCodes')) {
+                const defaultCodes = [
+                    { code: "CRB-BERSERKER", itemId: 1, valid: true },
+                    { code: "TT7-BERSERKER", itemId: 2, valid: true },
+                    { code: "TT7-SHINOBI", itemId: 3, valid: true }
+                ];
+                localStorage.setItem('redeemCodes', JSON.stringify(defaultCodes));
+            }
+        }
+
         // Periksa apakah admin sudah login
-        let currentAdmin = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentAdmin || currentAdmin.username !== 'admin') {
-            window.location.href = "index.html";
+        function checkAdminAuth() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.username !== 'admin') {
+                window.location.href = "index.html";
+            }
         }
 
         // Load data pengguna
@@ -221,9 +280,10 @@
                 userListHTML += `
                     <div class="user-card">
                         <div class="user-info">
-                            <div class="user-name">${user.username}</div>
+                            <div class="user-name">Username: ${user.username}</div>
                             <div class="user-balance">Saldo WebCoin: ${user.webcoinBalance}</div>
-                            <div>Item dimiliki: ${user.inventory ? user.inventory.length : 0}</div>
+                            <div>Total Item: ${user.inventory ? user.inventory.length : 0}</div>
+                            <div>Kode digunakan: ${user.usedCodes ? user.usedCodes.length : 0}</div>
                         </div>
                     </div>
                 `;
@@ -274,129 +334,214 @@
             });
         }
 
+        // Tambahkan saldo pengguna
+        function setupAddBalance() {
+            document.getElementById('addBtn').addEventListener('click', function() {
+                const username = document.getElementById('selectedUser').value;
+                const amount = parseInt(document.getElementById('addAmount').value);
+                const messageElement = document.getElementById('balanceMessage');
+                
+                messageElement.textContent = '';
+                messageElement.className = 'message';
+                
+                if (!username) {
+                    messageElement.textContent = 'Silakan pilih pengguna!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                if (isNaN(amount) || amount <= 0) {
+                    messageElement.textContent = 'Masukkan jumlah yang valid!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userIndex = users.findIndex(u => u.username === username);
+                
+                if (userIndex === -1) {
+                    messageElement.textContent = 'Pengguna tidak ditemukan!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                // Tambahkan saldo
+                users[userIndex].webcoinBalance += amount;
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Jika yang ditambah adalah admin yang sedang login, update currentUser
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.username === username) {
+                    currentUser.webcoinBalance = users[userIndex].webcoinBalance;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                
+                messageElement.textContent = `Berhasil menambahkan ${amount} WebCoin ke ${username}. Saldo baru: ${users[userIndex].webcoinBalance}`;
+                messageElement.classList.add('success');
+                
+                // Reset form
+                document.getElementById('addAmount').value = '';
+                
+                // Perbarui tampilan
+                loadUsers();
+            });
+        }
+
         // Kurangi saldo pengguna
-        document.getElementById('deductBtn').addEventListener('click', function() {
-            const username = document.getElementById('selectedUser').value;
-            const amount = parseInt(document.getElementById('deductAmount').value);
-            const messageElement = document.getElementById('deductMessage');
-            
-            if (!username) {
-                messageElement.textContent = 'Silakan pilih pengguna!';
-                messageElement.style.color = 'red';
-                return;
-            }
-            
-            if (isNaN(amount) {
-                messageElement.textContent = 'Masukkan jumlah yang valid!';
-                messageElement.style.color = 'red';
-                return;
-            }
-            
-            const users = JSON.parse(localStorage.getItem('users'));
-            const userIndex = users.findIndex(u => u.username === username);
-            
-            if (userIndex === -1) {
-                messageElement.textContent = 'Pengguna tidak ditemukan!';
-                messageElement.style.color = 'red';
-                return;
-            }
-            
-            if (users[userIndex].webcoinBalance < amount) {
-                messageElement.textContent = 'Saldo pengguna tidak cukup!';
-                messageElement.style.color = 'red';
-                return;
-            }
-            
-            // Kurangi saldo
-            users[userIndex].webcoinBalance -= amount;
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            // Jika yang dikurangi adalah admin yang sedang login, update currentUser
-            if (currentAdmin.username === username) {
-                currentAdmin.webcoinBalance = users[userIndex].webcoinBalance;
-                localStorage.setItem('currentUser', JSON.stringify(currentAdmin));
-            }
-            
-            messageElement.textContent = `Berhasil mengurangi ${amount} WebCoin dari ${username}. Saldo baru: ${users[userIndex].webcoinBalance}`;
-            messageElement.style.color = '#00ff88';
-            
-            // Reset form
-            document.getElementById('deductAmount').value = '';
-            
-            // Perbarui tampilan
-            loadUsers();
-        });
+        function setupDeductBalance() {
+            document.getElementById('deductBtn').addEventListener('click', function() {
+                const username = document.getElementById('selectedUser').value;
+                const amount = parseInt(document.getElementById('deductAmount').value);
+                const messageElement = document.getElementById('balanceMessage');
+                
+                messageElement.textContent = '';
+                messageElement.className = 'message';
+                
+                if (!username) {
+                    messageElement.textContent = 'Silakan pilih pengguna!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                if (isNaN(amount) || amount <= 0) {
+                    messageElement.textContent = 'Masukkan jumlah yang valid!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userIndex = users.findIndex(u => u.username === username);
+                
+                if (userIndex === -1) {
+                    messageElement.textContent = 'Pengguna tidak ditemukan!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                if (users[userIndex].webcoinBalance < amount) {
+                    messageElement.textContent = 'Saldo pengguna tidak cukup!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                // Kurangi saldo
+                users[userIndex].webcoinBalance -= amount;
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Jika yang dikurangi adalah admin yang sedang login, update currentUser
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.username === username) {
+                    currentUser.webcoinBalance = users[userIndex].webcoinBalance;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                
+                messageElement.textContent = `Berhasil mengurangi ${amount} WebCoin dari ${username}. Saldo baru: ${users[userIndex].webcoinBalance}`;
+                messageElement.classList.add('success');
+                
+                // Reset form
+                document.getElementById('deductAmount').value = '';
+                
+                // Perbarui tampilan
+                loadUsers();
+            });
+        }
 
         // Tambahkan kode redeem baru
-        document.getElementById('addCodeBtn').addEventListener('click', function() {
-            const code = document.getElementById('newCode').value.trim().toUpperCase();
-            const itemId = document.getElementById('codeItem').value;
-            
-            if (!code) {
-                alert('Silakan masukkan kode!');
-                return;
-            }
-            
-            let redeemCodes = JSON.parse(localStorage.getItem('redeemCodes')) || [];
-            
-            // Cek apakah kode sudah ada
-            if (redeemCodes.some(c => c.code === code)) {
-                alert('Kode sudah ada!');
-                return;
-            }
-            
-            // Tambahkan kode baru
-            redeemCodes.push({
-                code: code,
-                itemId: parseInt(itemId),
-                valid: true
+        function setupAddCode() {
+            document.getElementById('addCodeBtn').addEventListener('click', function() {
+                const code = document.getElementById('newCode').value.trim().toUpperCase();
+                const itemId = document.getElementById('codeItem').value;
+                const messageElement = document.getElementById('addCodeMessage');
+                
+                messageElement.textContent = '';
+                messageElement.className = 'message';
+                
+                if (!code) {
+                    messageElement.textContent = 'Silakan masukkan kode!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                let redeemCodes = JSON.parse(localStorage.getItem('redeemCodes')) || [];
+                
+                // Cek apakah kode sudah ada
+                if (redeemCodes.some(c => c.code === code)) {
+                    messageElement.textContent = 'Kode sudah ada!';
+                    messageElement.classList.add('error');
+                    return;
+                }
+                
+                // Tambahkan kode baru
+                redeemCodes.push({
+                    code: code,
+                    itemId: parseInt(itemId),
+                    valid: true
+                });
+                
+                localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
+                
+                messageElement.textContent = `Kode ${code} berhasil ditambahkan!`;
+                messageElement.classList.add('success');
+                document.getElementById('newCode').value = '';
+                
+                // Perbarui tampilan
+                loadRedeemCodes();
             });
-            
-            localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
-            
-            alert(`Kode ${code} berhasil ditambahkan!`);
-            document.getElementById('newCode').value = '';
-            
-            // Perbarui tampilan
-            loadRedeemCodes();
-        });
+        }
 
         // Toggle status kode redeem
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('toggle-code')) {
-                const code = e.target.getAttribute('data-code');
-                let redeemCodes = JSON.parse(localStorage.getItem('redeemCodes'));
-                
-                const codeIndex = redeemCodes.findIndex(c => c.code === code);
-                if (codeIndex !== -1) {
-                    redeemCodes[codeIndex].valid = !redeemCodes[codeIndex].valid;
-                    localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
-                    loadRedeemCodes();
-                }
-            }
-            
-            // Hapus kode redeem
-            if (e.target.classList.contains('delete-code')) {
-                if (confirm('Apakah Anda yakin ingin menghapus kode ini?')) {
+        function setupCodeActions() {
+            document.addEventListener('click', function(e) {
+                // Toggle status kode
+                if (e.target.classList.contains('toggle-code')) {
                     const code = e.target.getAttribute('data-code');
                     let redeemCodes = JSON.parse(localStorage.getItem('redeemCodes'));
                     
-                    redeemCodes = redeemCodes.filter(c => c.code !== code);
-                    localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
-                    loadRedeemCodes();
+                    const codeIndex = redeemCodes.findIndex(c => c.code === code);
+                    if (codeIndex !== -1) {
+                        redeemCodes[codeIndex].valid = !redeemCodes[codeIndex].valid;
+                        localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
+                        loadRedeemCodes();
+                    }
                 }
-            }
-        });
+                
+                // Hapus kode redeem
+                if (e.target.classList.contains('delete-code')) {
+                    const code = e.target.getAttribute('data-code');
+                    if (confirm(`Apakah Anda yakin ingin menghapus kode ${code}?`)) {
+                        let redeemCodes = JSON.parse(localStorage.getItem('redeemCodes'));
+                        
+                        redeemCodes = redeemCodes.filter(c => c.code !== code);
+                        localStorage.setItem('redeemCodes', JSON.stringify(redeemCodes));
+                        loadRedeemCodes();
+                    }
+                }
+            });
+        }
 
         // Logout
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('currentUser');
-            window.location.href = "index.html";
-        });
+        function setupLogout() {
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = "index.html";
+            });
+        }
 
-        // Inisialisasi pertama kali
-        loadUsers();
-        loadRedeemCodes();
+        // Inisialisasi aplikasi
+        function initAdminPanel() {
+            initializeData();
+            checkAdminAuth();
+            loadUsers();
+            loadRedeemCodes();
+            setupAddBalance();
+            setupDeductBalance();
+            setupAddCode();
+            setupCodeActions();
+            setupLogout();
+        }
+
+        // Jalankan aplikasi
+        initAdminPanel();
     </script>
 </body>
 </html>
