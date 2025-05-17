@@ -4,11 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Redemption Game</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a2e;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .auth-container {
+      background: #16213e;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: #ffcc00;
+      color: black;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .error {
+      color: #ff6b6b;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <div class="auth-container">
-    <h1>Login Admin</h1>
+    <h1>Login Redemption Game</h1>
     <form id="loginForm">
       <input type="text" id="username" placeholder="Username" required>
       <input type="password" id="password" placeholder="Password" required>
@@ -17,6 +58,37 @@
     <p>Belum punya akun? <a href="register.html">Daftar disini</a></p>
     <div id="errorMsg" class="error"></div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    // Inisialisasi data user jika belum ada
+    if (!localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify([
+        { 
+          username: "admin", 
+          password: "admin123",
+          webcoinBalance: 100000,
+          inventory: []
+        }
+      ]));
+    }
+
+    // Fungsi login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      const users = JSON.parse(localStorage.getItem('users'));
+      const user = users.find(u => u.username === username && u.password === password);
+      
+      if (user) {
+        // Simpan data user yang login
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.location.href = "store.html";
+      } else {
+        document.getElementById('errorMsg').textContent = "Username/password salah!";
+      }
+    });
+  </script>
 </body>
 </html>
