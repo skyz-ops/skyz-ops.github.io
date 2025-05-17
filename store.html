@@ -135,16 +135,34 @@
             cursor: pointer;
             font-weight: bold;
         }
+        .redeem-message {
+            margin-top: 10px;
+            min-height: 20px;
+        }
+        .dual-option {
+            display: flex;
+            gap: 10px;
+        }
+        .redeem-option {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Redemption Game Store</h1>
-        <p>Tukarkan kode redeem untuk item eksklusif!</p>
+        <p>Tukarkan WebCoin atau kode redeem untuk item eksklusif!</p>
     </div>
 
     <div class="balance">
-        Selamat datang, <strong id="usernameDisplay"></strong>!
+        Selamat datang, <strong id="usernameDisplay"></strong>! | 
+        Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
     </div>
 
     <div id="adminLinkContainer"></div>
@@ -153,7 +171,7 @@
         <h2>Redeem Code</h2>
         <input type="text" id="redeemCode" class="redeem-input" placeholder="Masukkan kode redeem">
         <button id="redeemBtn" class="redeem-btn">Redeem</button>
-        <p id="redeemMessage" style="margin-top: 10px;"></p>
+        <div id="redeemMessage" class="redeem-message"></div>
     </div>
 
     <h2>Item yang Tersedia</h2>
@@ -164,11 +182,15 @@
             <img src="https://i.ibb.co/zhBKDmcX/crb-berserker.png" alt="Kriss S.V CRB Berserker" class="item-image">
             <div class="item-info">
                 <div class="item-name">Kriss S.V CRB Berserker</div>
-                <div class="item-price">Kode Redeem: CRB-BERSERKER</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Kode Redeem: CRB-BERSERKER</div>
                 <div>Durasi: Permanent</div>
             </div>
         </div>
-        <button class="buy-btn" data-id="1" data-code="CRB-BERSERKER">Redeem</button>
+        <div class="dual-option">
+            <button class="buy-btn" data-id="1" data-price="50000">Beli</button>
+            <button class="redeem-option" data-id="1" data-code="CRB-BERSERKER">Redeem</button>
+        </div>
     </div>
     
     <!-- Item 2 -->
@@ -177,11 +199,15 @@
             <img src="https://i.ibb.co/fYVJTyht/t77-berserker.png" alt="TT7 Berserker" class="item-image">
             <div class="item-info">
                 <div class="item-name">TT7 Berserker</div>
-                <div class="item-price">Kode Redeem: TT7-BERSERKER</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Kode Redeem: TT7-BERSERKER</div>
                 <div>Durasi: Permanent</div>
             </div>
         </div>
-        <button class="buy-btn" data-id="2" data-code="TT7-BERSERKER">Redeem</button>
+        <div class="dual-option">
+            <button class="buy-btn" data-id="2" data-price="50000">Beli</button>
+            <button class="redeem-option" data-id="2" data-code="TT7-BERSERKER">Redeem</button>
+        </div>
     </div>
     
     <!-- Item 3 -->
@@ -190,11 +216,15 @@
             <img src="https://i.ibb.co/gMxNvrC4/t77ninja.png" alt="TT7 Shinobi" class="item-image">
             <div class="item-info">
                 <div class="item-name">TT7 Shinobi</div>
-                <div class="item-price">Kode Redeem: TT7-SHINOBI</div>
+                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                <div>Kode Redeem: TT7-SHINOBI</div>
                 <div>Durasi: Permanent</div>
             </div>
         </div>
-        <button class="buy-btn" data-id="3" data-code="TT7-SHINOBI">Redeem</button>
+        <div class="dual-option">
+            <button class="buy-btn" data-id="3" data-price="50000">Beli</button>
+            <button class="redeem-option" data-id="3" data-code="TT7-SHINOBI">Redeem</button>
+        </div>
     </div>
 
     <div class="inventory">
@@ -213,6 +243,7 @@
                 { 
                     username: "admin", 
                     password: "admin123",
+                    webcoinBalance: 100000,
                     inventory: [],
                     usedCodes: []
                 }
@@ -223,7 +254,7 @@
                 { code: "CRB-BERSERKER", itemId: 1, valid: true },
                 { code: "TT7-BERSERKER", itemId: 2, valid: true },
                 { code: "TT7-SHINOBI", itemId: 3, valid: true },
-                { code: "SPECIAL-CODE", itemId: 1, valid: true } // Contoh kode yang bisa redeem item 1
+                { code: "SPECIAL-CODE", itemId: 1, valid: true }
             ]));
         }
 
@@ -249,6 +280,7 @@
 
         // Update informasi user
         document.getElementById('usernameDisplay').textContent = currentUser.username;
+        document.getElementById('webcoinBalance').textContent = currentUser.webcoinBalance;
 
         // Update inventory
         function updateInventory() {
@@ -279,7 +311,7 @@
                     <div class="inventory-item">
                         <img src="${itemImage}" alt="${itemName}">
                         <div>
-                            <strong>${itemName}</strong> - Diredeem pada: ${new Date(item.redeemDate).toLocaleString()}
+                            <strong>${itemName}</strong> - ${item.method === 'redeem' ? 'Diredeem' : 'Dibeli'} pada: ${new Date(item.date).toLocaleString()}
                         </div>
                     </div>
                 `;
@@ -288,20 +320,67 @@
             inventoryElement.innerHTML = inventoryHTML;
         }
 
-        // Update tombol redeem
-        function updateRedeemButtons() {
-            document.querySelectorAll('.buy-btn').forEach(button => {
+        // Update tombol beli/redeem
+        function updateButtons() {
+            document.querySelectorAll('.buy-btn, .redeem-option').forEach(button => {
                 const itemId = parseInt(button.getAttribute('data-id'));
                 const alreadyOwned = currentUser.inventory && 
                     currentUser.inventory.some(item => item.id === itemId);
                 
                 if (alreadyOwned) {
-                    button.textContent = 'Sudah Dimiliki';
+                    button.disabled = true;
+                    if (button.classList.contains('buy-btn')) {
+                        button.textContent = 'Sudah Dimiliki';
+                    } else {
+                        button.textContent = 'Sudah Dimiliki';
+                    }
+                } else if (button.classList.contains('buy-btn') && 
+                          currentUser.webcoinBalance < parseInt(button.getAttribute('data-price'))) {
                     button.disabled = true;
                 } else {
                     button.disabled = false;
+                    if (button.classList.contains('buy-btn')) {
+                        button.textContent = 'Beli';
+                    } else {
+                        button.textContent = 'Redeem';
+                    }
                 }
             });
+        }
+
+        // Fungsi untuk membeli item
+        function buyItem(itemId, itemPrice, itemName) {
+            itemId = parseInt(itemId);
+            itemPrice = parseInt(itemPrice);
+            
+            if (currentUser.webcoinBalance >= itemPrice) {
+                // Kurangi saldo
+                currentUser.webcoinBalance -= itemPrice;
+                
+                // Inisialisasi inventory jika belum ada
+                if (!currentUser.inventory) {
+                    currentUser.inventory = [];
+                }
+                
+                // Tambahkan ke inventory
+                currentUser.inventory.push({
+                    id: itemId,
+                    date: new Date().toISOString(),
+                    method: 'purchase'
+                });
+                
+                // Update data di localStorage
+                updateUserData();
+                
+                alert(`Anda berhasil membeli ${itemName}!`);
+                
+                // Update UI
+                document.getElementById('webcoinBalance').textContent = currentUser.webcoinBalance;
+                updateInventory();
+                updateButtons();
+            } else {
+                alert('Saldo WebCoin tidak cukup!');
+            }
         }
 
         // Fungsi untuk redeem item
@@ -313,13 +392,13 @@
             const validCode = redeemCodes.find(c => c.code === itemCode && c.valid);
             
             if (!validCode) {
-                alert('Kode redeem tidak valid atau sudah digunakan!');
+                showMessage('Kode redeem tidak valid atau sudah digunakan!', 'error');
                 return;
             }
             
             // Periksa apakah user sudah menggunakan kode ini
             if (currentUser.usedCodes && currentUser.usedCodes.includes(itemCode)) {
-                alert('Anda sudah menggunakan kode ini sebelumnya!');
+                showMessage('Anda sudah menggunakan kode ini sebelumnya!', 'error');
                 return;
             }
             
@@ -336,13 +415,25 @@
             // Tambahkan ke inventory
             currentUser.inventory.push({
                 id: itemId,
-                redeemDate: new Date().toISOString()
+                date: new Date().toISOString(),
+                method: 'redeem'
             });
             
             // Tandai kode sebagai digunakan
             currentUser.usedCodes.push(itemCode);
             
             // Update data di localStorage
+            updateUserData();
+            
+            showMessage(`Anda berhasil menebus item dengan kode ${itemCode}!`, 'success');
+            
+            // Update UI
+            updateInventory();
+            updateButtons();
+        }
+
+        // Fungsi untuk update data user
+        function updateUserData() {
             const users = JSON.parse(localStorage.getItem('users'));
             const userIndex = users.findIndex(u => u.username === currentUser.username);
             if (userIndex !== -1) {
@@ -350,22 +441,38 @@
                 localStorage.setItem('users', JSON.stringify(users));
             }
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // Fungsi untuk menampilkan pesan
+        function showMessage(message, type) {
+            const redeemMessage = document.getElementById('redeemMessage');
+            redeemMessage.textContent = message;
+            redeemMessage.style.color = type === 'error' ? 'red' : '#00ff88';
             
-            let itemName = '';
-            if (itemId === 1) itemName = 'Kriss S.V CRB Berserker';
-            else if (itemId === 2) itemName = 'T77 Berserker';
-            else if (itemId === 3) itemName = 'T77 Shinobi';
-            
-            alert(`Anda berhasil menebus ${itemName} dengan kode ${itemCode}!`);
-            
-            // Update UI
-            updateInventory();
-            updateRedeemButtons();
+            // Reset message after 3 seconds
+            setTimeout(() => {
+                redeemMessage.textContent = '';
+            }, 3000);
         }
         
-        // Event listener untuk tombol redeem
+        // Event listener untuk tombol beli
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('buy-btn') && !e.target.disabled) {
+                const itemId = e.target.getAttribute('data-id');
+                const itemPrice = e.target.getAttribute('data-price');
+                let itemName = '';
+                
+                if (itemId === '1') itemName = 'Kriss S.V CRB Berserker';
+                else if (itemId === '2') itemName = 'T77 Berserker';
+                else if (itemId === '3') itemName = 'T77 Shinobi';
+                
+                if (confirm(`Apakah Anda yakin ingin membeli ${itemName} seharga ${itemPrice} WebCoin?`)) {
+                    buyItem(itemId, itemPrice, itemName);
+                }
+            }
+            
+            // Event listener untuk tombol redeem
+            if (e.target.classList.contains('redeem-option') && !e.target.disabled) {
                 const itemId = e.target.getAttribute('data-id');
                 const itemCode = e.target.getAttribute('data-code');
                 let itemName = '';
@@ -383,11 +490,9 @@
         // Event listener untuk redeem code input
         document.getElementById('redeemBtn').addEventListener('click', function() {
             const redeemCode = document.getElementById('redeemCode').value.trim().toUpperCase();
-            const redeemMessage = document.getElementById('redeemMessage');
             
             if (!redeemCode) {
-                redeemMessage.textContent = 'Silakan masukkan kode redeem';
-                redeemMessage.style.color = 'red';
+                showMessage('Silakan masukkan kode redeem', 'error');
                 return;
             }
             
@@ -396,28 +501,19 @@
             const validCode = redeemCodes.find(c => c.code === redeemCode && c.valid);
             
             if (!validCode) {
-                redeemMessage.textContent = 'Kode redeem tidak valid atau sudah digunakan!';
-                redeemMessage.style.color = 'red';
+                showMessage('Kode redeem tidak valid atau sudah digunakan!', 'error');
                 return;
             }
             
             // Periksa apakah user sudah menggunakan kode ini
             if (currentUser.usedCodes && currentUser.usedCodes.includes(redeemCode)) {
-                redeemMessage.textContent = 'Anda sudah menggunakan kode ini sebelumnya!';
-                redeemMessage.style.color = 'red';
+                showMessage('Anda sudah menggunakan kode ini sebelumnya!', 'error');
                 return;
             }
             
             // Redeem item
             redeemItem(validCode.itemId, redeemCode);
             document.getElementById('redeemCode').value = '';
-            redeemMessage.textContent = 'Item berhasil ditebus!';
-            redeemMessage.style.color = '#00ff88';
-            
-            // Reset message after 3 seconds
-            setTimeout(() => {
-                redeemMessage.textContent = '';
-            }, 3000);
         });
 
         // Logout
@@ -428,7 +524,7 @@
         
         // Inisialisasi pertama kali
         updateInventory();
-        updateRedeemButtons();
+        updateButtons();
     </script>
 </body>
 </html>
