@@ -74,6 +74,12 @@
             background-color: var(--light);
         }
         
+        .user-menu .active {
+            background-color: var(--primary);
+            color: black;
+            font-weight: bold;
+        }
+        
         .user-menu .admin-link {
             background-color: #4CAF50;
         }
@@ -101,6 +107,14 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 1.2em;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
         }
         
         .items-container {
@@ -229,10 +243,10 @@
         </div>
         
         <ul class="user-menu">
-            <li><a href="#">Redeem Code</a></li>
-            <li><a href="#">Top Up</a></li>
-            <li><a href="#">Download</a></li>
-            <li><a href="#">Shop</a></li>
+            <li><a href="#" class="nav-link" data-section="redeem">Redeem Code</a></li>
+            <li><a href="#" class="nav-link" data-section="topup">Top Up</a></li>
+            <li><a href="#" class="nav-link" data-section="download">Download</a></li>
+            <li><a href="#" class="nav-link active" data-section="shop">Shop</a></li>
             <li id="adminLinkContainer"></li>
             <li><a href="index.html" class="logout-link">Logout</a></li>
         </ul>
@@ -249,41 +263,62 @@
             Saldo WebCoin Anda: <span id="webcoinBalance">0</span>
         </div>
 
-        <h2>Item yang Tersedia</h2>
-        
-        <div class="items-container">
-            <!-- Item 1 -->
-            <div class="item-card">
-                <img src="https://i.ibb.co/zhBKDmcX/crb-berserker.png" alt="Kriss S.V CRB Berserker" class="item-image">
-                <div class="item-name">Kriss S.V CRB Berserker</div>
-                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div class="item-duration">Durasi: Permanent</div>
-                <button class="buy-btn" data-id="1" data-price="50000">Beli Sekarang</button>
-            </div>
-            
-            <!-- Item 2 -->
-            <div class="item-card">
-                <img src="https://i.ibb.co/fYVJTyht/t77-berserker.png" alt="TT7 Berserker" class="item-image">
-                <div class="item-name">TT7 Berserker</div>
-                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div class="item-duration">Durasi: Permanent</div>
-                <button class="buy-btn" data-id="2" data-price="50000">Beli Sekarang</button>
-            </div>
-            
-            <!-- Item 3 -->
-            <div class="item-card">
-                <img src="https://i.ibb.co/gMxNvrC4/t77ninja.png" alt="TT7 Shinobi" class="item-image">
-                <div class="item-name">TT7 Shinobi</div>
-                <div class="item-price">Harga: 💬 50,000 WebCoin</div>
-                <div class="item-duration">Durasi: Permanent</div>
-                <button class="buy-btn" data-id="3" data-price="50000">Beli Sekarang</button>
-            </div>
+        <!-- Redeem Code Section -->
+        <div id="redeem" class="section">
+            <h2>Redeem Code</h2>
+            <p>Masukkan kode redeem Anda di sini.</p>
         </div>
 
-        <div class="inventory-container">
-            <h3 class="inventory-title">Inventory Anda</h3>
-            <div id="userInventory" class="inventory-items">
-                <div style="grid-column: 1/-1; text-align: center;">Anda belum memiliki item.</div>
+        <!-- Top Up Section -->
+        <div id="topup" class="section">
+            <h2>Top Up WebCoin</h2>
+            <p>Pilih metode pembayaran untuk top up WebCoin.</p>
+        </div>
+
+        <!-- Download Section -->
+        <div id="download" class="section">
+            <h2>Download</h2>
+            <p>Download konten eksklusif di sini.</p>
+        </div>
+
+        <!-- Shop Section (Items moved here) -->
+        <div id="shop" class="section active">
+            <h2>Item yang Tersedia</h2>
+            
+            <div class="items-container">
+                <!-- Item 1 -->
+                <div class="item-card">
+                    <img src="https://i.ibb.co/zhBKDmcX/crb-berserker.png" alt="Kriss S.V CRB Berserker" class="item-image">
+                    <div class="item-name">Kriss S.V CRB Berserker</div>
+                    <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                    <div class="item-duration">Durasi: Permanent</div>
+                    <button class="buy-btn" data-id="1" data-price="50000">Beli Sekarang</button>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="item-card">
+                    <img src="https://i.ibb.co/fYVJTyht/t77-berserker.png" alt="TT7 Berserker" class="item-image">
+                    <div class="item-name">TT7 Berserker</div>
+                    <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                    <div class="item-duration">Durasi: Permanent</div>
+                    <button class="buy-btn" data-id="2" data-price="50000">Beli Sekarang</button>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="item-card">
+                    <img src="https://i.ibb.co/gMxNvrC4/t77ninja.png" alt="TT7 Shinobi" class="item-image">
+                    <div class="item-name">TT7 Shinobi</div>
+                    <div class="item-price">Harga: 💬 50,000 WebCoin</div>
+                    <div class="item-duration">Durasi: Permanent</div>
+                    <button class="buy-btn" data-id="3" data-price="50000">Beli Sekarang</button>
+                </div>
+            </div>
+
+            <div class="inventory-container">
+                <h3 class="inventory-title">Inventory Anda</h3>
+                <div id="userInventory" class="inventory-items">
+                    <div style="grid-column: 1/-1; text-align: center;">Anda belum memiliki item.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -318,7 +353,7 @@
         // Tampilkan admin link jika user adalah admin
         if (currentUser.username === 'admin') {
             document.getElementById('adminLinkContainer').innerHTML = 
-                '<a href="admin.html" class="admin-link">Admin Panel</a>';
+                '<li><a href="admin.html" class="admin-link">Admin Panel</a></li>';
         }
 
         // Update informasi user
@@ -326,6 +361,22 @@
         document.getElementById('usernameMain').textContent = currentUser.username;
         document.getElementById('webcoinBalance').textContent = currentUser.webcoinBalance;
         document.getElementById('webcoinBalanceSide').textContent = currentUser.webcoinBalance;
+
+        // Navigation between sections
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link and corresponding section
+                this.classList.add('active');
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
 
         // Update inventory
         function updateInventory() {
