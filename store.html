@@ -21,19 +21,29 @@
             font-family: 'Arial', sans-serif;
             background-color: var(--primary-bg);
             color: var(--text-light);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             line-height: 1.6;
         }
-        
-        .header {
+
+        /* Header Styles */
+        .admin-header {
+            background-color: var(--secondary-bg);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .user-header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--accent-color);
         }
-        
+
+        /* User Bar Styles */
         .user-bar {
             background-color: var(--secondary-bg);
             padding: 15px;
@@ -45,13 +55,13 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .user-avatar {
             width: 50px;
             height: 50px;
@@ -64,18 +74,19 @@
             color: var(--text-dark);
             font-size: 1.2em;
         }
-        
+
         .user-name {
             font-weight: bold;
             font-size: 1.2em;
         }
-        
+
         .user-balance {
             color: var(--success-color);
             font-weight: bold;
             font-size: 1.1em;
         }
-        
+
+        /* Button Styles */
         .btn {
             border: none;
             padding: 10px 15px;
@@ -87,6 +98,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            font-size: 14px;
         }
         
         .btn-primary {
@@ -96,6 +108,7 @@
         
         .btn-primary:hover {
             background-color: #e6b800;
+            transform: translateY(-2px);
         }
         
         .btn-danger {
@@ -115,18 +128,39 @@
         .btn-success:hover {
             background-color: #3d8b40;
         }
-        
+
+        .btn-admin {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Section Styles */
         .section-title {
             color: var(--accent-color);
             margin-top: 0;
-            border-bottom: 1px solid var(--accent-color);
             padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .store-section {
-            margin-bottom: 40px;
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
+
+        /* Item Grid Styles */
         .item-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -138,15 +172,16 @@
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 20px;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             border-left: 5px solid var(--accent-color);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .item-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         
         .item-image {
@@ -184,7 +219,8 @@
             gap: 10px;
             margin-top: 15px;
         }
-        
+
+        /* Inventory Styles */
         .inventory-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -222,7 +258,19 @@
             font-size: 0.8em;
             opacity: 0.8;
         }
-        
+
+        /* Admin Controls */
+        .admin-controls {
+            background-color: var(--secondary-bg);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Redeem Section */
         .redeem-section {
             background-color: var(--secondary-bg);
             padding: 20px;
@@ -245,6 +293,7 @@
             color: var(--text-light);
         }
         
+        /* Message Styles */
         .message {
             padding: 15px;
             border-radius: 5px;
@@ -264,10 +313,7 @@
             border-left: 4px solid var(--success-color);
         }
         
-        .btn-icon {
-            margin-right: 5px;
-        }
-        
+        /* Badge Styles */
         .badge {
             position: absolute;
             top: 10px;
@@ -280,17 +326,34 @@
             font-weight: bold;
         }
         
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: rgba(255, 255, 255, 0.5);
             font-style: italic;
         }
-        
+
+        /* Responsive Styles */
         @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            
             .user-bar {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            
+            .admin-actions, .item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                width: 100%;
             }
             
             .item-grid, .inventory-list {
@@ -304,47 +367,81 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <!-- Admin Header (Only shown for admin users) -->
+    <header class="admin-header" id="adminHeader" style="display: none;">
+        <div class="admin-title">
+            <h1>Game Store Admin Panel</h1>
+        </div>
+        <div class="admin-actions">
+            <button id="adminDashboardBtn" class="btn btn-admin">
+                <i class="btn-icon">📊</i> Dashboard Admin
+            </button>
+            <button id="logoutBtn" class="btn btn-danger">
+                <i class="btn-icon">🚪</i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- User Header (Shown for all users) -->
+    <div class="user-header" id="userHeader">
         <h1>Redemption Game Store</h1>
         <p>Tukarkan WebCoin atau kode redeem untuk item eksklusif!</p>
     </div>
 
-    <div class="user-bar">
-        <div class="user-info">
-            <div class="user-avatar" id="userAvatar">U</div>
-            <div>
-                <div class="user-name" id="usernameDisplay">Pengguna</div>
-                <div class="user-balance" id="webcoinBalance">0 WebCoin</div>
+    <div class="container">
+        <!-- User Bar (Shown for all users) -->
+        <div class="user-bar" id="userBar">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
+                    <div class="user-name" id="usernameDisplay">Pengguna</div>
+                    <div class="user-balance" id="webcoinBalance">0 WebCoin</div>
+                </div>
             </div>
-        </div>
-        <button id="logoutBtn" class="btn btn-danger">
-            <i class="btn-icon">🚪</i> Logout
-        </button>
-    </div>
-
-    <div class="redeem-section">
-        <h2 class="section-title"><i class="btn-icon">🎟️</i> Redeem Code</h2>
-        <p>Masukkan kode redeem yang valid untuk mendapatkan item secara gratis!</p>
-        <div id="redeemMessage" class="message" style="display: none;"></div>
-        <div class="redeem-form">
-            <input type="text" id="redeemCodeInput" class="redeem-input" placeholder="Masukkan kode redeem (contoh: CRB-BERSERKER)">
-            <button id="redeemBtn" class="btn btn-success">
-                <i class="btn-icon">🎁</i> Redeem
+            <button id="userLogoutBtn" class="btn btn-danger">
+                <i class="btn-icon">🚪</i> Logout
             </button>
         </div>
-    </div>
 
-    <div class="store-section">
-        <h2 class="section-title"><i class="btn-icon">🛒</i> Item yang Tersedia</h2>
-        <div class="item-grid" id="itemGrid">
-            <!-- Item akan dimuat melalui JavaScript -->
+        <!-- Admin Controls (Only shown for admin users) -->
+        <div class="admin-controls" id="adminControls" style="display: none;">
+            <button id="manageItemsBtn" class="btn btn-primary">
+                <i class="btn-icon">🛍️</i> Kelola Item
+            </button>
+            <button id="viewReportsBtn" class="btn btn-primary">
+                <i class="btn-icon">📈</i> Laporan Penjualan
+            </button>
+            <button id="backToStoreBtn" class="btn btn-success">
+                <i class="btn-icon">🛒</i> Kembali ke Toko
+            </button>
         </div>
-    </div>
 
-    <div class="store-section">
-        <h2 class="section-title"><i class="btn-icon">🎒</i> Inventory Anda</h2>
-        <div class="inventory-list" id="inventoryList">
-            <!-- Inventory akan dimuat melalui JavaScript -->
+        <!-- Redeem Section (Shown for all users) -->
+        <div class="redeem-section" id="redeemSection">
+            <h2 class="section-title"><i class="btn-icon">🎟️</i> Redeem Code</h2>
+            <p>Masukkan kode redeem yang valid untuk mendapatkan item secara gratis!</p>
+            <div id="redeemMessage" class="message" style="display: none;"></div>
+            <div class="redeem-form">
+                <input type="text" id="redeemCodeInput" class="redeem-input" placeholder="Masukkan kode redeem (contoh: CRB-BERSERKER)">
+                <button id="redeemBtn" class="btn btn-success">
+                    <i class="btn-icon">🎁</i> Redeem
+                </button>
+            </div>
+        </div>
+
+        <!-- Store Content -->
+        <div class="store-section">
+            <h2 class="section-title"><i class="btn-icon">🛒</i> Item yang Tersedia</h2>
+            <div class="item-grid" id="itemGrid">
+                <!-- Items will be loaded here -->
+            </div>
+        </div>
+
+        <div class="store-section">
+            <h2 class="section-title"><i class="btn-icon">🎒</i> Inventory Anda</h2>
+            <div class="inventory-list" id="inventoryList">
+                <!-- Inventory will be loaded here -->
+            </div>
         </div>
     </div>
 
@@ -357,7 +454,8 @@
                 price: 50000,
                 image: "https://i.ibb.co/zhBKDmcX/crb-berserker.png",
                 description: "Senjata eksklusif dengan damage tinggi",
-                code: "CRB-BERSERKER"
+                code: "CRB-BERSERKER",
+                stock: 15
             },
             {
                 id: 2,
@@ -365,7 +463,8 @@
                 price: 50000,
                 image: "https://i.ibb.co/fYVJTyht/t77-berserker.png",
                 description: "Senjata close-range dengan fire rate tinggi",
-                code: "TT7-BERSERKER"
+                code: "TT7-BERSERKER",
+                stock: 8
             },
             {
                 id: 3,
@@ -373,7 +472,8 @@
                 price: 50000,
                 image: "https://i.ibb.co/gMxNvrC4/t77ninja.png",
                 description: "Senjata silent dengan akurasi sempurna",
-                code: "TT7-SHINOBI"
+                code: "TT7-SHINOBI",
+                stock: 12
             }
         ];
 
@@ -406,6 +506,15 @@
             document.getElementById('usernameDisplay').textContent = currentUser.username;
             document.getElementById('webcoinBalance').textContent = `${formatNumber(currentUser.webcoinBalance)} WebCoin`;
             document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+
+            // Tampilkan elemen admin jika user adalah admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('adminHeader').style.display = 'flex';
+                document.getElementById('adminControls').style.display = 'flex';
+                document.getElementById('userHeader').style.display = 'none';
+                document.getElementById('userBar').style.display = 'none';
+                document.getElementById('redeemSection').style.display = 'none';
+            }
         }
 
         // Render item yang tersedia
@@ -419,28 +528,51 @@
                 
                 const itemCard = document.createElement('div');
                 itemCard.className = 'item-card';
-                itemCard.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="item-image">
-                    <h3 class="item-name">${item.name}</h3>
-                    <p class="item-price">Harga: ${formatNumber(item.price)} WC</p>
-                    <p class="item-code">Kode: ${item.code}</p>
-                    <p>${item.description}</p>
-                    <div class="item-actions">
-                        <button class="btn btn-primary buy-btn" data-id="${item.id}" data-price="${item.price}">
-                            <i class="btn-icon">💰</i> Beli
-                        </button>
-                        <button class="btn btn-success redeem-item-btn" data-id="${item.id}" data-code="${item.code}">
-                            <i class="btn-icon">🎟️</i> Redeem
-                        </button>
-                    </div>
-                    ${alreadyOwned ? '<div class="badge">Owned</div>' : ''}
-                `;
+                
+                // Tampilan berbeda untuk admin dan user biasa
+                if (currentUser.role === 'admin') {
+                    itemCard.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="item-image">
+                        <h3 class="item-name">${item.name}</h3>
+                        <p class="item-price">Harga: ${formatNumber(item.price)} WC</p>
+                        <p class="item-code">Kode: ${item.code}</p>
+                        <p>${item.description}</p>
+                        <p><strong>Stok:</strong> ${item.stock}</p>
+                        <div class="item-actions">
+                            <button class="btn btn-primary edit-item-btn" data-id="${item.id}">
+                                <i class="btn-icon">✏️</i> Edit
+                            </button>
+                            <button class="btn btn-danger delete-item-btn" data-id="${item.id}">
+                                <i class="btn-icon">🗑️</i> Hapus
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    itemCard.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="item-image">
+                        <h3 class="item-name">${item.name}</h3>
+                        <p class="item-price">Harga: ${formatNumber(item.price)} WC</p>
+                        <p class="item-code">Kode: ${item.code}</p>
+                        <p>${item.description}</p>
+                        <div class="item-actions">
+                            <button class="btn btn-primary buy-btn" data-id="${item.id}" data-price="${item.price}">
+                                <i class="btn-icon">💰</i> Beli
+                            </button>
+                            <button class="btn btn-success redeem-item-btn" data-id="${item.id}" data-code="${item.code}">
+                                <i class="btn-icon">🎟️</i> Redeem
+                            </button>
+                        </div>
+                        ${alreadyOwned ? '<div class="badge">Owned</div>' : ''}
+                    `;
+                }
                 
                 itemGrid.appendChild(itemCard);
             });
             
             // Update status tombol
-            updateButtonStates();
+            if (currentUser.role !== 'admin') {
+                updateButtonStates();
+            }
         }
 
         // Render inventory
@@ -483,7 +615,7 @@
             });
         }
 
-        // Update status tombol beli/redeem
+        // Update status tombol beli/redeem (untuk user biasa)
         function updateButtonStates() {
             document.querySelectorAll('.buy-btn, .redeem-item-btn').forEach(button => {
                 const itemId = parseInt(button.getAttribute('data-id'));
@@ -614,16 +746,44 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Logout
-            document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Logout (for admin)
+            document.getElementById('logoutBtn')?.addEventListener('click', function() {
+                if (confirm('Apakah Anda yakin ingin logout?')) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = "index.html";
+                }
+            });
+
+            // Logout (for regular user)
+            document.getElementById('userLogoutBtn')?.addEventListener('click', function() {
                 if (confirm('Apakah Anda yakin ingin logout?')) {
                     localStorage.removeItem('currentUser');
                     window.location.href = "index.html";
                 }
             });
             
-            // Redeem code
-            document.getElementById('redeemBtn').addEventListener('click', function() {
+            // Admin dashboard button
+            document.getElementById('adminDashboardBtn')?.addEventListener('click', function() {
+                window.location.href = "admin.html";
+            });
+
+            // Back to store button (for admin)
+            document.getElementById('backToStoreBtn')?.addEventListener('click', function() {
+                window.location.href = "store.html";
+            });
+
+            // Manage items button (for admin)
+            document.getElementById('manageItemsBtn')?.addEventListener('click', function() {
+                alert('Fitur kelola item akan dibuka di panel admin');
+            });
+
+            // View reports button (for admin)
+            document.getElementById('viewReportsBtn')?.addEventListener('click', function() {
+                alert('Fitur laporan penjualan akan ditampilkan');
+            });
+            
+            // Redeem code (for regular user)
+            document.getElementById('redeemBtn')?.addEventListener('click', function() {
                 const redeemCode = document.getElementById('redeemCodeInput').value.trim();
                 if (!redeemCode) {
                     showMessage('Silakan masukkan kode redeem!', 'error');
@@ -642,15 +802,15 @@
             });
             
             // Enter key untuk redeem
-            document.getElementById('redeemCodeInput').addEventListener('keypress', function(e) {
+            document.getElementById('redeemCodeInput')?.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     document.getElementById('redeemBtn').click();
                 }
             });
             
-            // Delegasi event untuk tombol beli/redeem
+            // Delegasi event untuk tombol dinamis
             document.addEventListener('click', function(e) {
-                // Tombol beli
+                // Tombol beli (for regular user)
                 if (e.target.classList.contains('buy-btn') || e.target.closest('.buy-btn')) {
                     const button = e.target.classList.contains('buy-btn') ? e.target : e.target.closest('.buy-btn');
                     const itemId = button.getAttribute('data-id');
@@ -662,7 +822,7 @@
                     }
                 }
                 
-                // Tombol redeem per item
+                // Tombol redeem per item (for regular user)
                 if (e.target.classList.contains('redeem-item-btn') || e.target.closest('.redeem-item-btn')) {
                     const button = e.target.classList.contains('redeem-item-btn') ? e.target : e.target.closest('.redeem-item-btn');
                     const itemId = button.getAttribute('data-id');
@@ -671,6 +831,23 @@
                     
                     if (item && confirm(`Tebus ${item.name} dengan kode ${itemCode}?`)) {
                         redeemItem(itemId, itemCode);
+                    }
+                }
+                
+                // Tombol edit item (for admin)
+                if (e.target.classList.contains('edit-item-btn') || e.target.closest('.edit-item-btn')) {
+                    const button = e.target.classList.contains('edit-item-btn') ? e.target : e.target.closest('.edit-item-btn');
+                    const itemId = button.getAttribute('data-id');
+                    alert(`Mengedit item dengan ID: ${itemId}`);
+                }
+                
+                // Tombol hapus item (for admin)
+                if (e.target.classList.contains('delete-item-btn') || e.target.closest('.delete-item-btn')) {
+                    const button = e.target.classList.contains('delete-item-btn') ? e.target : e.target.closest('.delete-item-btn');
+                    const itemId = button.getAttribute('data-id');
+                    if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                        alert(`Item dengan ID: ${itemId} akan dihapus`);
+                        // In a real app, you would make an API call to delete
                     }
                 }
             });
