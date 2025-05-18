@@ -739,17 +739,27 @@
             document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
 
             // Tampilkan elemen admin jika user adalah admin
-            if (currentUser.role === 'admin') {
-                document.getElementById('adminHeader').style.display = 'flex';
-                document.getElementById('adminControls').style.display = 'flex';
-                document.getElementById('userAdminBtn').style.display = 'flex';
-                document.getElementById('userHeader').style.display = 'none';
-                
-                // Sembunyikan redeem section jika dalam mode admin
-                if (window.location.search.includes('admin=true')) {
-                    document.getElementById('redeemSection').style.display = 'none';
-                }
-            }
+// Di dalam fungsi updateUserInfo():
+if (currentUser.role === 'admin') {
+    document.getElementById('adminHeader').style.display = 'flex';
+    document.getElementById('adminControls').style.display = 'flex';
+    document.getElementById('admin-btn').style.display = 'flex'; // Diubah dari userAdminBtn ke admin-btn
+    document.getElementById('userHeader').style.display = 'none';
+    
+    // Sembunyikan redeem section jika dalam mode admin
+    if (window.location.search.includes('admin=true')) {
+        document.getElementById('redeemSection').style.display = 'none';
+        document.getElementById('userHeader').style.display = 'none';
+    } else {
+        document.getElementById('userHeader').style.display = 'block';
+    }
+} else {
+    document.getElementById('adminHeader').style.display = 'none';
+    document.getElementById('adminControls').style.display = 'none';
+    document.getElementById('admin-btn').style.display = 'none';
+    document.getElementById('userHeader').style.display = 'block';
+    document.getElementById('redeemSection').style.display = 'block';
+}
         }
 
         // Render item yang tersedia
@@ -1033,10 +1043,11 @@
                 window.location.href = "admin.html";
             });
 
-            // Admin panel button (for user bar)
-            document.getElementById('userAdminBtn')?.addEventListener('click', function() {
-                window.location.href = "store.html?admin=true";
-            });
+// Di dalam fungsi setupEventListeners():
+// Admin panel button (for user bar) - Diubah dari userAdminBtn ke admin-btn
+document.getElementById('admin-btn')?.addEventListener('click', function() {
+    window.location.href = "store.html?admin=true";
+});
 
             // Back to store button (for admin)
             document.getElementById('backToStoreBtn')?.addEventListener('click', function() {
