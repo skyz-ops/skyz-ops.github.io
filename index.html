@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redemption Game Store</title>
-    <!-- Add reCAPTCHA API -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         :root {
             --primary-bg: #1a1a2e;
@@ -169,7 +167,6 @@
                 <label for="loginPassword">Password:</label>
                 <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password">
             </div>
-            </div>
             <button id="loginBtn" class="btn btn-primary">
                 <i class="btn-icon">→</i> Login
             </button>
@@ -193,6 +190,7 @@
             <div class="form-group">
                 <label for="confirmPassword">Konfirmasi Password:</label>
                 <input type="password" id="confirmPassword" class="form-control" placeholder="Ulangi password">
+            </div>
             <button id="registerBtn" class="btn btn-success">
                 <i class="btn-icon">✓</i> Daftar
             </button>
@@ -235,35 +233,13 @@
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerForm').style.display = 'block';
                 document.getElementById('loginMessage').style.display = 'none';
-                document.getElementById('loginCaptchaError').style.display = 'none';
-                // Reset reCAPTCHA
-                grecaptcha.reset();
             });
             
             document.getElementById('showLogin').addEventListener('click', function() {
                 document.getElementById('registerForm').style.display = 'none';
                 document.getElementById('loginForm').style.display = 'block';
                 document.getElementById('registerMessage').style.display = 'none';
-                document.getElementById('registerCaptchaError').style.display = 'none';
-                // Reset reCAPTCHA
-                grecaptcha.reset();
             });
-        }
-
-        // Validasi CAPTCHA
-        function validateCaptcha(formType) {
-            const captchaResponse = grecaptcha.getResponse();
-            const errorElement = formType === 'login' 
-                ? document.getElementById('loginCaptchaError')
-                : document.getElementById('registerCaptchaError');
-                
-            if (!captchaResponse) {
-                errorElement.style.display = 'block';
-                return false;
-            }
-            
-            errorElement.style.display = 'none';
-            return true;
         }
 
         // Validasi form register
@@ -305,11 +281,6 @@
         // Proses registrasi
         function setupRegister() {
             document.getElementById('registerBtn').addEventListener('click', function() {
-                // Validasi CAPTCHA terlebih dahulu
-                if (!validateCaptcha('register')) {
-                    return;
-                }
-                
                 const username = document.getElementById('registerUsername').value.trim();
                 const password = document.getElementById('registerPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
@@ -349,8 +320,6 @@
                     document.getElementById('registerMessage').style.display = 'none';
                     document.getElementById('loginUsername').value = username;
                     document.getElementById('loginPassword').focus();
-                    // Reset reCAPTCHA
-                    grecaptcha.reset();
                 }, 1500);
             });
         }
@@ -358,11 +327,6 @@
         // Proses login
         function setupLogin() {
             document.getElementById('loginBtn').addEventListener('click', function() {
-                // Validasi CAPTCHA terlebih dahulu
-                if (!validateCaptcha('login')) {
-                    return;
-                }
-                
                 const username = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value;
                 const messageElement = document.getElementById('loginMessage');
