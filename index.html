@@ -3,288 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot Saya</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>WhatsApp Bot dengan LolHuman API</title>
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --ai-color: #4cc9f0;
-            --user-color: #4895ef;
-            --background-color: #f8f9fa;
-            --text-color: #212529;
-            --light-gray: #e9ecef;
-        }
-
-        * {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--background-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #075e54;
+            margin-bottom: 20px;
         }
 
         .chat-container {
-            width: 100%;
-            max-width: 600px;
-            height: 80vh;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            height: 500px;
         }
 
-        .chat-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .ai-icon {
-            font-size: 1.8rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .chat-messages {
+        .chat-box {
             flex: 1;
-            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            background-color: #f9f9f9;
         }
 
         .message {
-            max-width: 80%;
-            padding: 12px 15px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
             border-radius: 18px;
-            line-height: 1.5;
-            position: relative;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .ai-message {
-            align-self: flex-start;
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            border-bottom-left-radius: 5px;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            background-color: var(--user-color);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .message-content {
+            max-width: 70%;
             word-wrap: break-word;
         }
 
-        .chat-input {
+        .user-message {
+            background-color: #dcf8c6;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: #ffffff;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #eee;
+        }
+
+        .input-area {
             display: flex;
-            padding: 15px;
-            border-top: 1px solid var(--light-gray);
-            background-color: white;
+            gap: 10px;
         }
 
-        .chat-input input {
+        .input-area input {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 25px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
             outline: none;
-            font-size: 1rem;
-            transition: border 0.3s;
         }
 
-        .chat-input input:focus {
-            border-color: var(--primary-color);
-        }
-
-        .chat-input button {
-            background-color: var(--primary-color);
+        .input-area button {
+            padding: 10px 20px;
+            background-color: #075e54;
             color: white;
             border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-left: 10px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+        }
+
+        .input-area button:hover {
+            background-color: #128c7e;
+        }
+
+        .api-key-area {
+            margin-top: 15px;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 10px;
         }
 
-        .chat-input button:hover {
-            background-color: var(--secondary-color);
+        .api-key-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
         }
 
-        /* Responsiveness */
-        @media (max-width: 600px) {
-            .chat-container {
-                height: 90vh;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
+        .api-key-area button {
+            padding: 10px 15px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .api-key-area button:hover {
+            background-color: #3a5a8a;
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h2>AI Assistant</h2>
-            <div class="ai-icon">
-                <i class="fas fa-robot"></i>
+    <div class="container">
+        <h1>WhatsApp Bot</h1>
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box"></div>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Ketik pesan Anda..." autocomplete="off">
+                <button id="send-btn">Kirim</button>
             </div>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message ai-message">
-                <div class="message-content">
-                    Halo! Saya AI Assistant Anda. Ada yang bisa saya bantu?
-                </div>
+            <div class="api-key-area">
+                <input type="password" id="api-key" placeholder="Masukkan API Key LolHuman">
+                <button id="save-key">Simpan API Key</button>
             </div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Ketik pesan Anda..." autocomplete="off">
-            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const chatMessages = document.getElementById('chat-messages');
+            const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
-            const sendButton = document.getElementById('send-button');
+            const sendBtn = document.getElementById('send-btn');
+            const apiKeyInput = document.getElementById('api-key');
+            const saveKeyBtn = document.getElementById('save-key');
             
-            // Fungsi untuk menambahkan pesan ke chat
-            function addMessage(content, isUser) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'message-content';
-                contentDiv.textContent = content;
-                
-                messageDiv.appendChild(contentDiv);
-                chatMessages.appendChild(messageDiv);
-                
-                // Scroll ke bawah
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+            // Cek jika API key sudah disimpan di localStorage
+            const savedApiKey = localStorage.getItem('lolhuman_api_key');
+            if (savedApiKey) {
+                apiKeyInput.value = savedApiKey;
+                addBotMessage("API Key telah dimuat. Anda bisa mulai mengobrol.");
+            } else {
+                addBotMessage("Silakan masukkan API Key LolHuman Anda terlebih dahulu.");
             }
             
-            // Fungsi untuk mendapatkan respon AI
-            function getAIResponse(userMessage) {
-                // Konversi pesan user ke lowercase untuk memudahkan pemrosesan
-                const message = userMessage.toLowerCase();
-                
-                // Logika respon sederhana
-                if (message.includes('halo') || message.includes('hai') || message.includes('hi')) {
-                    return "Halo! Ada yang bisa saya bantu?";
-                } else if (message.includes('nama') && message.includes('kamu')) {
-                    return "Saya adalah AI Assistant yang siap membantu Anda!";
-                } else if (message.includes('terima kasih') || message.includes('thanks')) {
-                    return "Sama-sama! Senang bisa membantu Anda.";
-                } else if (message.includes('bye') || message.includes('selamat tinggal')) {
-                    return "Selamat tinggal! Sampai jumpa lagi.";
-                } else if (message.includes('help') || message.includes('bantuan')) {
-                    return "Saya bisa menjawab pertanyaan sederhana. Coba tanyakan tentang: \n- Salam \n- Nama saya \n- Atau hal lainnya";
-                } else if (message.includes('jam') || message.includes('waktu')) {
-                    const now = new Date();
-                    return `Sekarang jam ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-                } else if (message.includes('tanggal')) {
-                    const now = new Date();
-                    return `Hari ini tanggal ${now.toLocaleDateString()}`;
+            // Simpan API key
+            saveKeyBtn.addEventListener('click', function() {
+                const apiKey = apiKeyInput.value.trim();
+                if (apiKey) {
+                    localStorage.setItem('lolhuman_api_key', apiKey);
+                    addBotMessage("API Key berhasil disimpan!");
                 } else {
-                    // Jika tidak dikenali, gunakan salah satu respon default
-                    const defaultResponses = [
-                        "Maaf, saya tidak mengerti pertanyaan Anda. Bisakah Anda menjelaskannya lebih detail?",
-                        "Saya belum bisa menjawab itu. Ada pertanyaan lain?",
-                        "Menarik! Tapi saya belum diprogram untuk menanggapi itu.",
-                        "Saya AI sederhana, mungkin saya tidak bisa menjawab pertanyaan itu."
-                    ];
-                    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+                    addBotMessage("Mohon masukkan API Key yang valid.");
                 }
-            }
+            });
             
-            // Fungsi untuk memproses input user
-            function processUserInput() {
-                const message = userInput.value.trim();
-                if (message === '') return;
-                
-                // Tambahkan pesan user
-                addMessage(message, true);
-                userInput.value = '';
-                
-                // Beri jeda sebelum AI merespon (efek typing)
-                setTimeout(() => {
-                    const aiResponse = getAIResponse(message);
-                    addMessage(aiResponse, false);
-                }, 500);
-            }
-            
-            // Event listener untuk tombol kirim
-            sendButton.addEventListener('click', processUserInput);
-            
-            // Event listener untuk tekan Enter
+            // Kirim pesan ketika tombol diklik atau enter ditekan
+            sendBtn.addEventListener('click', sendMessage);
             userInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    processUserInput();
+                    sendMessage();
                 }
             });
-        });
-
-        // Contoh fungsi untuk integrasi dengan OpenAI API (tidak aktif)
-        /*
-        async function getAIResponseFromAPI(userMessage) {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR_API_KEY'
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [{role: "user", content: userMessage}]
-                })
-            });
             
-            const data = await response.json();
-            return data.choices[0].message.content;
-        }
-        */
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (!message) return;
+                
+                // Tampilkan pesan pengguna
+                addUserMessage(message);
+                userInput.value = '';
+                
+                // Cek API key
+                const apiKey = localStorage.getItem('lolhuman_api_key');
+                if (!apiKey) {
+                    addBotMessage("Error: API Key belum diset. Silakan masukkan API Key LolHuman Anda.");
+                    return;
+                }
+                
+                // Kirim ke API LolHuman
+                fetchLolHumanAPI(message, apiKey)
+                    .then(response => {
+                        if (response && response.result) {
+                            addBotMessage(response.result);
+                        } else {
+                            addBotMessage("Maaf, saya tidak bisa memproses permintaan Anda saat ini.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        addBotMessage("Terjadi kesalahan saat memproses permintaan Anda.");
+                    });
+            }
+            
+            async function fetchLolHumanAPI(message, apiKey) {
+                // Endpoint LolHuman untuk WhatsApp/simsimi (contoh)
+                const endpoint = "https://api.lolhuman.xyz/api/simi";
+                
+                try {
+                    const response = await fetch(`${endpoint}?apikey=${apiKey}&text=${encodeURIComponent(message)}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error("API Error:", error);
+                    throw error;
+                }
+            }
+            
+            function addUserMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'user-message');
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+            
+            function addBotMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'bot-message');
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
     </script>
 </body>
 </html>
