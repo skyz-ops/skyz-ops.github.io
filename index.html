@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PB Zynect - Solusi Teknologi Digital</title>
+    <title>PB Zynect Indonesia - Private Server Point Blank</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
+            --secondary: #e74c3c;
+            --accent: #3498db;
             --light: #ecf0f1;
             --dark: #2c3e50;
+            --dark-red: #c0392b;
         }
         
         * {
@@ -22,9 +23,13 @@
         }
         
         body {
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: #111;
+            color: #fff;
             line-height: 1.6;
+            background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
         }
         
         .container {
@@ -36,14 +41,15 @@
         
         /* Header */
         header {
-            background-color: var(--primary);
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 15px 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
         }
         
         .header-container {
@@ -65,10 +71,9 @@
         .logo h1 {
             font-size: 1.5rem;
             font-weight: 700;
-        }
-        
-        .logo span {
-            color: var(--secondary);
+            background: linear-gradient(to right, #e74c3c, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         nav ul {
@@ -85,6 +90,8 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
         
         nav ul li a:hover {
@@ -99,15 +106,24 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
             height: 100vh;
             display: flex;
             align-items: center;
             text-align: center;
-            color: white;
             padding-top: 80px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
         }
         
         .hero-content {
@@ -116,8 +132,10 @@
         }
         
         .hero h2 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
+            text-transform: uppercase;
+            color: var(--secondary);
         }
         
         .hero p {
@@ -136,12 +154,15 @@
             transition: all 0.3s;
             border: none;
             cursor: pointer;
+            margin: 5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
         
         .btn:hover {
-            background-color: #2980b9;
+            background-color: var(--dark-red);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .btn-accent {
@@ -149,13 +170,16 @@
         }
         
         .btn-accent:hover {
-            background-color: #c0392b;
+            background-color: #2980b9;
         }
         
-        /* Services Section */
-        .services {
-            padding: 80px 0;
-            background-color: white;
+        /* Main Content */
+        .main-content {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 50px 0;
+            margin: 50px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
         
         .section-title {
@@ -165,10 +189,11 @@
         
         .section-title h2 {
             font-size: 2rem;
-            color: var(--dark);
+            color: var(--secondary);
             position: relative;
             display: inline-block;
             padding-bottom: 15px;
+            text-transform: uppercase;
         }
         
         .section-title h2::after {
@@ -179,160 +204,192 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background-color: var(--secondary);
+            background-color: var(--accent);
         }
         
-        .services-grid {
+        /* Player Stats */
+        .player-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
+            margin-bottom: 50px;
         }
         
-        .service-card {
-            background-color: var(--light);
+        .stat-card {
+            background-color: rgba(44, 62, 80, 0.7);
             border-radius: 10px;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid var(--secondary);
         }
         
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .service-icon {
-            font-size: 3rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-        
-        .service-card h3 {
-            font-size: 1.5rem;
+        .stat-card h3 {
+            font-size: 1.2rem;
             margin-bottom: 15px;
-            color: var(--dark);
+            color: var(--accent);
         }
         
-        /* About Section */
-        .about {
-            padding: 80px 0;
-            background-color: var(--light);
+        .stat-card .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
         }
         
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
+        /* Player Tables */
+        .player-tables {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
         }
         
-        .about-image {
-            flex: 1;
+        .table-container {
+            background-color: rgba(44, 62, 80, 0.7);
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow-x: auto;
         }
         
-        .about-image img {
+        .table-container h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        table {
             width: 100%;
-            height: auto;
-            display: block;
+            border-collapse: collapse;
         }
         
-        .about-text {
-            flex: 1;
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .about-text h2 {
-            font-size: 2rem;
-            color: var(--dark);
-            margin-bottom: 20px;
+        th {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
         
-        .about-text p {
-            margin-bottom: 20px;
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
         }
         
-        /* Contact Section */
-        .contact {
-            padding: 80px 0;
-            background-color: white;
+        /* Issues Section */
+        .issues-section {
+            margin-top: 50px;
         }
         
-        .contact-container {
+        .issues-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
+            gap: 20px;
         }
         
-        .contact-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--dark);
+        .issue-column {
+            background-color: rgba(44, 62, 80, 0.7);
+            border-radius: 10px;
+            padding: 20px;
         }
         
-        .contact-info p {
-            margin-bottom: 15px;
-        }
-        
-        .contact-info i {
+        .issue-column h4 {
             color: var(--secondary);
-            margin-right: 10px;
-            width: 20px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
         }
         
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 12px;
+        .issue-item {
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 2px solid var(--accent);
+        }
+        
+        .issue-item strong {
+            color: var(--accent);
+        }
+        
+        /* Discord Section */
+        .discord-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .discord-widget {
+            background-color: rgba(44, 62, 80, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #7289da;
+        }
+        
+        .discord-widget h3 {
+            color: #7289da;
             margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+            font-size: 1.5rem;
         }
         
-        .contact-form textarea {
-            height: 150px;
-            resize: vertical;
+        .discord-members {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .discord-members p {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .discord-members p::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #7289da;
+        }
+        
+        .discord-btn {
+            background-color: #7289da;
+            color: white;
+        }
+        
+        .discord-btn:hover {
+            background-color: #677bc4;
         }
         
         /* Footer */
         footer {
-            background-color: var(--dark);
+            background-color: rgba(0, 0, 0, 0.9);
             color: white;
-            padding: 50px 0 20px;
+            padding: 30px 0 20px;
+            text-align: center;
+            margin-top: 50px;
         }
         
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-col h3 {
-            font-size: 1.3rem;
+        .footer-logo {
             margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
         }
         
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary);
-        }
-        
-        .footer-col p {
-            margin-bottom: 15px;
+        .footer-logo img {
+            height: 50px;
         }
         
         .social-links {
             display: flex;
+            justify-content: center;
             gap: 15px;
+            margin-bottom: 20px;
         }
         
         .social-links a {
@@ -345,10 +402,9 @@
             color: var(--secondary);
         }
         
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .copyright {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
         }
         
         /* Responsive */
@@ -376,16 +432,16 @@
                 margin-bottom: 15px;
             }
             
-            .about-content {
-                flex-direction: column;
-            }
-            
             .hero h2 {
                 font-size: 2rem;
             }
             
             .hero p {
                 font-size: 1rem;
+            }
+            
+            .player-tables {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -396,14 +452,15 @@
         <div class="container header-container">
             <div class="logo">
                 <img src="https://pbzynect.com/assets/images/logo.png" alt="PB Zynect Logo">
-                <h1>PB <span>Zynect</span></h1>
+                <h1>PB Zynect</h1>
             </div>
             <nav>
                 <ul>
                     <li><a href="#home">Beranda</a></li>
-                    <li><a href="#services">Layanan</a></li>
-                    <li><a href="#about">Tentang Kami</a></li>
-                    <li><a href="#contact">Kontak</a></li>
+                    <li><a href="#stats">Statistik</a></li>
+                    <li><a href="#issues">Keluhan</a></li>
+                    <li><a href="#discord">Discord</a></li>
+                    <li><a href="#download">Download</a></li>
                 </ul>
             </nav>
             <div class="mobile-menu">
@@ -415,154 +472,302 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container hero-content">
-            <h2>Solusi Teknologi Digital untuk Bisnis Anda</h2>
-            <p>Kami menyediakan layanan IT terbaik untuk membantu bisnis Anda tumbuh di era digital. Dari pengembangan web hingga solusi keamanan siber, kami memiliki semua yang Anda butuhkan.</p>
-            <a href="#contact" class="btn">Hubungi Kami</a>
-            <a href="#services" class="btn btn-accent">Layanan Kami</a>
+            <h2>#NOSTALGIAFORERA</h2>
+            <p>Welcome to Zynect Indonesia Private Server - Penyedia game berbasis Point Blank dengan tampilan Gemscool/Garena yang bertujuan untuk mengenang era Gemscool maupun Garena</p>
+            <a href="#download" class="btn">DOWNLOAD</a>
+            <a href="#register" class="btn btn-accent">REGISTER</a>
+            
+            <div class="player-count" style="margin-top: 30px;">
+                <h3>PLAYER ONLINE</h3>
+                <div class="stat-value">0</div>
+            </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
+    <!-- Main Content -->
+    <div class="container">
+        <section class="main-content" id="stats">
             <div class="section-title">
-                <h2>Layanan Kami</h2>
+                <h2>Statistik Pemain</h2>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Pengembangan Web</h3>
-                    <p>Kami membuat website profesional yang responsif dan SEO-friendly untuk bisnis Anda.</p>
+            
+            <div class="player-stats">
+                <div class="stat-card">
+                    <h3>Total Pemain</h3>
+                    <div class="stat-value">583</div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Aplikasi Mobile</h3>
-                    <p>Pengembangan aplikasi mobile untuk platform iOS dan Android dengan performa optimal.</p>
+                <div class="stat-card">
+                    <h3>Clan Terdaftar</h3>
+                    <div class="stat-value">42</div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Keamanan Siber</h3>
-                    <p>Solusi keamanan komprehensif untuk melindungi data dan sistem bisnis Anda.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cloud"></i>
-                    </div>
-                    <h3>Cloud Computing</h3>
-                    <p>Layanan cloud untuk meningkatkan skalabilitas dan fleksibilitas bisnis Anda.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Digital Marketing</h3>
-                    <p>Strategi pemasaran digital untuk meningkatkan visibilitas dan penjualan bisnis Anda.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Manajemen Data</h3>
-                    <p>Solusi pengelolaan data untuk membantu pengambilan keputusan yang lebih baik.</p>
+                <div class="stat-card">
+                    <h3>Online Hari Ini</h3>
+                    <div class="stat-value">128</div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tentang PB Zynect">
+            
+            <div class="player-tables">
+                <div class="table-container">
+                    <h3>10 Player Teratas</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Nickname</th>
+                                <th>EXP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Gibak</td>
+                                <td>298,573,316</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Sillabato</td>
+                                <td>271,705,596</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>raswamaky</td>
+                                <td>232,174,913</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>varla</td>
+                                <td>219,855,224</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Za'i'la</td>
+                                <td>213,813,447</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Pakdani Yiti</td>
+                                <td>205,972,653</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>SALAM INTERAKSI</td>
+                                <td>193,962,616</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Jabad</td>
+                                <td>184,420,928</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Leyla</td>
+                                <td>180,893,554</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>brymup-</td>
+                                <td>179,020,291</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="about-text">
-                    <h2>Tentang PB Zynect</h2>
-                    <p>PB Zynect adalah perusahaan teknologi yang berfokus pada penyediaan solusi digital untuk bisnis di berbagai industri. Dengan tim yang berpengalaman dan berdedikasi, kami berkomitmen untuk memberikan layanan terbaik kepada klien kami.</p>
-                    <p>Sejak didirikan, kami telah membantu ratusan bisnis untuk bertransformasi digital dan mencapai tujuan mereka melalui teknologi inovatif.</p>
-                    <p>Visi kami adalah menjadi mitra teknologi terpercaya bagi bisnis di Indonesia, sementara misi kami adalah memberikan solusi teknologi yang efektif, efisien, dan terjangkau.</p>
-                    <a href="#contact" class="btn">Pelajari Lebih Lanjut</a>
+                
+                <div class="table-container">
+                    <h3>10 Clan Teratas</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Nama Clan</th>
+                                <th>EXP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Clan Elite</td>
+                                <td>450,123,456</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Legends</td>
+                                <td>420,987,654</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Shadow Warriors</td>
+                                <td>398,765,432</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Phoenix</td>
+                                <td>387,654,321</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Dark Knights</td>
+                                <td>376,543,210</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Immortal</td>
+                                <td>365,432,109</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Storm Riders</td>
+                                <td>354,321,098</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Blood Fang</td>
+                                <td>343,210,987</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Iron Fist</td>
+                                <td>332,109,876</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Silent Assassins</td>
+                                <td>321,098,765</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
+        </section>
+        
+        <section class="main-content issues-section" id="issues">
             <div class="section-title">
-                <h2>Hubungi Kami</h2>
+                <h2>INOVASI UNTUK SERVER</h2>
+                <p>Kami selalu berinovasi untuk memberikan pengalaman bermain terbaik bagi komunitas PB Zynect</p>
             </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Informasi Kontak</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Jl. Teknologi No. 123, Jakarta, Indonesia</p>
-                    <p><i class="fas fa-phone"></i> +62 123 4567 890</p>
-                    <p><i class="fas fa-envelope"></i> info@pbzynect.com</p>
-                    <p><i class="fas fa-clock"></i> Senin - Jumat: 9:00 - 17:00</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            
+            <div class="issues-grid">
+                <div class="issue-column">
+                    <h4>Keluhan Umum Pemain</h4>
+                    <div class="issue-item">
+                        <strong>Lag saat war meskipun koneksi lancar</strong>
+                        <p>Beberapa pemain melaporkan lag saat pertempuran meski koneksi stabil</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Cheater mengganggu pengalaman bermain</strong>
+                        <p>Masih ada beberapa cheater yang lolos dari deteksi</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Bug bom meledak lambat atau tidak konsisten</strong>
+                        <p>Waktu ledakan bom kadang tidak sesuai</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Senjata tidak balance atau terasa pay-to-win</strong>
+                        <p>Beberapa senjata dianggap terlalu kuat</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Server tiba-tiba disconnect</strong>
+                        <p>Kadang terjadi disconnect di tengah permainan</p>
                     </div>
                 </div>
-                <div class="contact-form">
-                    <form>
-                        <input type="text" placeholder="Nama Anda" required>
-                        <input type="email" placeholder="Email Anda" required>
-                        <input type="text" placeholder="Subjek">
-                        <textarea placeholder="Pesan Anda" required></textarea>
-                        <button type="submit" class="btn">Kirim Pesan</button>
-                    </form>
+                
+                <div class="issue-column">
+                    <h4>Solusi & Komitmen Kami</h4>
+                    <div class="issue-item">
+                        <strong>Sistem Anti-Cheat mandiri</strong>
+                        <p>Yang terus diperbaiki dan ditingkatkan</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Driver rekomendasi NVIDIA</strong>
+                        <p>Versi S31.xx untuk menghindari input lag</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Monitoring aktif oleh admin</strong>
+                        <p>Setiap hari untuk memastikan permainan fair</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Balancing senjata & item</strong>
+                        <p>Demi menjaga fair play dan keseimbangan</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Event dan masukan dari komunitas</strong>
+                        <p>Sangat dihargai dan dipertimbangkan</p>
+                    </div>
+                </div>
+                
+                <div class="issue-column">
+                    <h4>Catatan Tambahan</h4>
+                    <div class="issue-item">
+                        <strong>Beban server</strong>
+                        <p>Kadang kurang optimal saat jam sibuk</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Fitur Anti-Cheat</strong>
+                        <p>Masih terus dikembangkan agar lebih efektif dan mengurangi false positive</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Kompatibilitas hardware</strong>
+                        <p>Beberapa hardware baru kadang bermasalah</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Dukungan fitur Repair</strong>
+                        <p>Untuk client yang bermasalah</p>
+                    </div>
+                    <div class="issue-item">
+                        <strong>Client tidak bisa launch</strong>
+                        <p>Karena missing file atau file korup</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p>Yuk, bantu kami lebih baik lagi! Sampaikan keluh kesahmu melalui sosial media resmi Zynect. Suaramu penting bagi perkembangan komunitas!</p>
+            </div>
+        </section>
+        
+        <section class="main-content discord-section" id="discord">
+            <div class="discord-widget">
+                <h3><i class="fab fa-discord"></i> DISCORD KOMUNITAS</h3>
+                <p>Bergabunglah dengan komunitas kami di Discord untuk berinteraksi dengan pemain lain dan mendapatkan informasi terbaru!</p>
+                
+                <div class="discord-members">
+                    <h4>MEMBERS ONLINE:</h4>
+                    <p>Carolini Impact with numbers / help</p>
+                    <p>// ServerStats</p>
+                    <p>Averkey</p>
+                    <p>Azure Audrow William & Jahem</p>
+                    <p>All Street</p>
+                    <p>Allen</p>
+                    <p>Arcane</p>
+                    <p>Payon</p>
+                    <p>website</p>
+                    <p>IBM 407</p>
+                    <p>Subbasum</p>
+                    <p>C.T. Merry</p>
+                    <p>Disney/TCY</p>
+                </div>
+                
+                <a href="#" class="btn discord-btn">JOIN DISCORD KAMI</a>
+                <p style="margin-top: 15px; font-size: 0.9rem;">Hangout with people who get it</p>
+            </div>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h3>Tentang PB Zynect</h3>
-                    <p>PB Zynect adalah perusahaan teknologi yang menyediakan solusi digital untuk membantu bisnis tumbuh di era digital.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Layanan Kami</h3>
-                    <ul>
-                        <li><a href="#">Pengembangan Web</a></li>
-                        <li><a href="#">Aplikasi Mobile</a></li>
-                        <li><a href="#">Keamanan Siber</a></li>
-                        <li><a href="#">Cloud Computing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Link Cepat</h3>
-                    <ul>
-                        <li><a href="#home">Beranda</a></li>
-                        <li><a href="#services">Layanan</a></li>
-                        <li><a href="#about">Tentang Kami</a></li>
-                        <li><a href="#contact">Kontak</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Newsletter</h3>
-                    <p>Berlangganan newsletter kami untuk mendapatkan update terbaru.</p>
-                    <form>
-                        <input type="email" placeholder="Email Anda" required>
-                        <button type="submit" class="btn">Berlangganan</button>
-                    </form>
-                </div>
+            <div class="footer-logo">
+                <img src="https://pbzynect.com/assets/images/logo.png" alt="PB Zynect Logo">
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 PB Zynect. Semua Hak Dilindungi.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                <p>Copyright © 2023 PB Zynect Indonesia. All Rights Reserved.</p>
+                <p>WE ARE ONLINE NOW!</p>
             </div>
         </div>
     </footer>
@@ -584,11 +789,23 @@
             });
         });
 
-        // Sticky Header
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            header.classList.toggle('sticky', window.scrollY > 0);
-        });
+        // Update Player Count (example)
+        function updatePlayerCount() {
+            // In a real implementation, this would fetch from your server
+            const playerCountElement = document.querySelector('.player-count .stat-value');
+            const randomCount = Math.floor(Math.random() * 100) + 50; // Random number for demo
+            playerCountElement.textContent = randomCount;
+            
+            // Animate the number change
+            playerCountElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                playerCountElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Update every 10 seconds
+        updatePlayerCount();
+        setInterval(updatePlayerCount, 10000);
     </script>
 </body>
 </html>
