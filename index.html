@@ -3,93 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Wangi MLBB</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Sistem Login & Daftar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Popup Login -->
-    <div id="login-popup" class="popup">
-        <div class="popup-content">
-            <h2>Masukkan Nickname MLBB</h2>
-            <input type="text" id="player-name" placeholder="Contoh: ProPlayer123">
-            <button onclick="login()">Masuk</button>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form action="#" id="registerForm">
+                <h1>Buat Akun</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>atau gunakan email untuk registrasi</span>
+                <input type="text" placeholder="Nama Lengkap" id="regName" required />
+                <input type="email" placeholder="Email" id="regEmail" required />
+                <input type="password" placeholder="Password" id="regPassword" required />
+                <input type="password" placeholder="Konfirmasi Password" id="regConfirmPassword" required />
+                <button type="submit">Daftar</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#" id="loginForm">
+                <h1>Masuk</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>atau gunakan akun Anda</span>
+                <input type="email" placeholder="Email" id="loginEmail" required />
+                <input type="password" placeholder="Password" id="loginPassword" required />
+                <a href="#" id="forgotPassword">Lupa password?</a>
+                <button type="submit">Masuk</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Selamat Datang Kembali!</h1>
+                    <p>Untuk tetap terhubung dengan kami, silakan login dengan info pribadi Anda</p>
+                    <button class="ghost" id="signIn">Masuk</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Halo, Teman!</h1>
+                    <p>Masukkan detail pribadi Anda dan mulailah perjalanan bersama kami</p>
+                    <button class="ghost" id="signUp">Daftar</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Main App (Setelah Login) -->
-    <div class="container" id="main-app" style="display: none;">
-        <div class="header">
-            <h1><i class="fas fa-crown"></i> Room Wangi MLBB</h1>
-            <p id="welcome-message"></p>
-        </div>
-        
-        <div class="tabs">
-            <button class="tab-button active" onclick="openTab('join-room')"><i class="fas fa-search"></i> Cari Room</button>
-            <button class="tab-button" onclick="openTab('create-room')"><i class="fas fa-plus"></i> Buat Room</button>
-            <button class="tab-button" onclick="openTab('my-room')"><i class="fas fa-users"></i> Room Saya</button>
-        </div>
-        
-        <!-- Tab Gabung Room -->
-        <div id="join-room" class="tab-content active">
-            <div class="filter-section">
-                <select id="filter-tier">
-                    <option value="any">Semua Tier</option>
-                    <option value="epic">Epic</option>
-                    <option value="legend">Legend</option>
-                    <option value="mythic">Mythic</option>
-                </select>
-                <select id="filter-role">
-                    <option value="any">Semua Role</option>
-                    <option value="tank">Tank</option>
-                    <option value="marksman">Marksman</option>
-                    <option value="mage">Mage</option>
-                </select>
-                <button onclick="filterRooms()"><i class="fas fa-filter"></i> Filter</button>
-            </div>
-            
-            <div id="available-rooms">
-                <!-- Daftar room akan dimuat di sini -->
-            </div>
-        </div>
-        
-        <!-- Tab Buat Room -->
-        <div id="create-room" class="tab-content">
-            <input type="text" id="room-name" placeholder="Nama Room (Contoh: Mythic Glory Only)">
-            <select id="tier">
-                <option value="any">Tier Apa Saja</option>
-                <option value="epic">Epic</option>
-                <option value="legend">Legend</option>
-                <option value="mythic">Mythic</option>
-            </select>
-            <select id="role">
-                <option value="any">Role Apa Saja</option>
-                <option value="tank">Tank</option>
-                <option value="marksman">Marksman</option>
-                <option value="mage">Mage</option>
-            </select>
-            <button onclick="createRoom()"><i class="fas fa-gamepad"></i> Buat Room</button>
-        </div>
-        
-        <!-- Tab Room Saya -->
-        <div id="my-room" class="tab-content">
-            <div id="active-room">
-                <p id="no-room-message">Anda belum bergabung ke room.</p>
-                <div id="room-details" style="display: none;">
-                    <h3 id="current-room-name"></h3>
-                    <p id="current-room-code"></p>
-                    <div class="room-actions">
-                        <button onclick="copyRoomCode()"><i class="fas fa-copy"></i> Salin Kode</button>
-                        <button onclick="shareRoom()"><i class="fab fa-whatsapp"></i> Invite via WhatsApp</button>
-                        <button onclick="leaveRoom()"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-                    </div>
-                    <div id="room-chat">
-                        <div id="chat-messages"></div>
-                        <input type="text" id="chat-input" placeholder="Ketik pesan...">
-                        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Kirim</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Modal Lupa Password -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reset Password</h2>
+            <form id="forgotPasswordForm">
+                <p>Masukkan alamat email Anda dan kami akan mengirimkan link untuk mereset password Anda.</p>
+                <input type="email" placeholder="Email" id="resetEmail" required />
+                <button type="submit">Kirim Link Reset</button>
+            </form>
         </div>
     </div>
 
