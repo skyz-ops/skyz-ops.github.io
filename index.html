@@ -175,10 +175,10 @@
 
   window.onload = () => {
     typeWriter();
-    fetch("https://ipapi.co/json/")
+    fetch("https://api.ipify.org?format=json")
       .then(response => response.json())
       .then(data => {
-        const locationText = `[ From You: ${data.city}, ${data.country_name} (${data.ip}) ]`;
+        const locationText = `[ From You: ${data.country_name} (${data.ip}) ]`;
         document.getElementById("visitor-info").textContent = locationText;
       })
       .catch(() => {
