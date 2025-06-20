@@ -83,3 +83,32 @@
     });
   }
 </script>
+
+<!-- Contoh backend verification (proses_login.php) -->
+<?php
+/*
+// UNCOMMENT UNTUK VERIFIKASI SERVER-SIDE
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $secretKey = "6L1322crAAAAAAWZ-WV_R2OuUdrW9d35p5mPZGe";
+    $token = $_POST['g-recaptcha-response'];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    
+    $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$token&remoteip=$ip";
+    $response = file_get_contents($url);
+    $data = json_decode($response);
+    
+    if ($data->success && $data->score > 0.5) {
+        // reCAPTCHA valid, proses login
+        $username = $_POST['user_login'];
+        $password = $_POST['pwd_login'];
+        // Logika autentikasi di sini
+        echo "Login berhasil! Skor reCAPTCHA: " . $data->score;
+    } else {
+        // reCAPTCHA tidak valid
+        echo "Verifikasi reCAPTCHA gagal. Skor terlalu rendah atau invalid.";
+    }
+}
+*/
+?>
+</body>
+</html>
