@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <meta name="title" content="@aphrodite_ | Web Profile & Social Links">
-	<meta name="description" content="@aphrodite_ untuk melihat karya, link sosial media, dan kutipan inspiratif. Web simple, clean, dan modern.">
-	<meta name="keywords" content="aphrodite_, preniv, duharmx, tiktok adduhaa, web profile, portfolio, coding, developer">
-	<meta name="author" content="aphrodite_">
-	<meta name="robots" content="index, follow" />
-	<meta name="language" content="id" />
-	<meta name="theme-color" content="#0f0f0f" />
+  <meta name="title" content="@aphrodite_ | Profil Web & Tautan Sosial">
+  <meta name="description" content="Profil @aphrodite_ untuk melihat karya, tautan sosial media, dan kutipan inspiratif. Desain web sederhana, bersih, modern.">
+  <meta name="keywords" content="aphrodite_, profil web, portfolio, coding, developer">
+  <meta name="author" content="aphrodite_">
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="id" />
+  <meta name="theme-color" content="#0f0f0f" />
 
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://duhatry.com/">
-	<meta property="og:title" content="@aphrodite_ | Web Profile & Social Links">
-	<meta property="og:description" content="@aphrodite_ untuk melihat karya, link sosial media, dan kutipan inspiratif. Web simple, clean, dan modern.">
-	<meta property="og:image" content="#" /> 
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skyz-ops.github.io/">
+  <meta property="og:title" content="@aphrodite_ | Profil Web & Tautan Sosial">
+  <meta property="og:description" content="Profil @aphrodite_ untuk melihat karya dan tautan sosial media.">
+  <meta property="og:image" content="#"> 
 
-	<meta property="twitter:card" content="summary_large_image">
-	<meta property="twitter:url" content="https://duhatry.com/">
-	<meta property="twitter:title" content="@aphrodite_ | Web Profile & Social Links">
-	<meta property="twitter:description" content="@aphrodite_ untuk melihat karya, link sosial media, dan kutipan inspiratif. Web simple, clean, dan modern.">
-	<meta property="twitter:image" content="#"> 
-	
-  <title>@aphrodite_ | Web Profile & Social Links</title>
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://skyz-ops.github.io/">
+  <meta property="twitter:title" content="@aphrodite_ | Profil Web & Tautan Sosial">
+  <meta property="twitter:description" content="Profil @aphrodite_ untuk melihat karya dan tautan sosial media.">
+  <meta property="twitter:image" content="#"> 
+  
+  <title>@aphrodite_ | Profil Web & Tautan Sosial</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -52,7 +52,6 @@
     .glow-icon i {
       font-size: 50px;
       color: #6bc4ff;
-      /* animation: glow 2s infinite ease-in-out; */
     }
 
     @keyframes glow {
@@ -126,34 +125,38 @@
       color: #6bc4ff;
       margin-bottom: 8px;
     }
+    
+    #visitor-info {
+      font-size: 13px;
+      color: #6bc4ff;
+      margin-top: 15px;
+      min-height: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="bio-container">
     <div class="glow-icon"><i class="bi bi-terminal-fill"></i></div>
     <h1 class="typewriter" id="typewriter"></h1>
-    <p class="desc">Code it. Remix it. Aim it.</p>
+    <p class="desc">Kodekan. Remix. Tembak.</p>
     <blockquote class="quote" id="quoteWriter"></blockquote>
-       <p id="visitor-info" style="font-size: 13px; color: #6bc4ff; margin-top: 15px;">
-        Checking location...
-      </p>
+    <p id="visitor-info">Mendeteksi lokasi Anda...</p>
     <div class="link-buttons">
-        <a href="/download" target="_blank"><i class="bi bi-globe2"></i> Download Zynect</a>
-      <a href="https://duhatry.com/register" target="_blank"><i class="bi bi-globe2"></i>Register Zynect</a>
-      <a href="https://duhatry.com/login" target="_blank"><i class="bi bi-globe2"></i>Login Zynect</a>
       <a href="https://tiktok.com/@skyzheeaje" target="_blank"><i class="bi bi-tiktok"></i> TikTok</a>
       <a href="https://www.youtube.com/@SkyzENZO" target="_blank"><i class="bi bi-youtube"></i> YouTube</a>
       <a href="https://www.instagram.com/mam.foreverr_" target="_blank"><i class="bi bi-instagram"></i> Instagram</a>
     </div>
 
     <div class="about">
-      <h2>-= About Qu =-</h2>
-      <p>yaahh sekedar gabut aja sebenernya, cuman kalau kamu ingin menggunakan jasa kita bisa melalui contact di atas yaa.</p>
+      <h2>-= Tentang Saya =-</h2>
+      <p>Iseng-iseng aja sebenernya, tapi kalau mau pakai jasa saya bisa hubungi lewat link di atas.</p>
     </div>
   </div>
+
 <script>
+  // Efek ketik
   const text = "@aphrodite_";
-  const quote = `"Frustasi itu bukan pertanda mau nyerah dalam 1 hal. Tapi itu adalah bukti kalau kamu masih peduli sama mimpi yang ingin kamu kejar."`;
+  const quote = `"Frustrasi bukan tanda mau menyerah. Itu bukti kamu masih peduli dengan mimpi yang ingin dikejar."`;
 
   let i = 0;
   let j = 0;
@@ -176,19 +179,54 @@
     }
   }
 
+  // Deteksi lokasi dengan fallback
+  async function detectLocation() {
+    const infoElement = document.getElementById("visitor-info");
+    
+    try {
+      // Coba API utama
+      const response = await fetch('https://ipapi.co/json/');
+      if (response.ok) {
+        const data = await response.json();
+        infoElement.textContent = `Dari ${data.city || 'Kota tidak diketahui'}, ${data.country_name || 'Negara tidak diketahui'} (${data.ip || 'IP tidak diketahui'})`;
+        return;
+      }
+    } catch (error) {
+      console.log("Gagal menggunakan ipapi.co, mencoba alternatif...");
+    }
+
+    // Fallback 1
+    try {
+      const response = await fetch('https://api.ipgeolocation.io/ipgeo?apiKey=ae6a5c40b2b14f69b0c105011e4e6da2');
+      if (response.ok) {
+        const data = await response.json();
+        infoElement.textContent = `Dari ${data.city || 'Kota tidak diketahui'}, ${data.country_name || 'Negara tidak diketahui'} (${data.ip || 'IP tidak diketahui'})`;
+        return;
+      }
+    } catch (error) {
+      console.log("Gagal menggunakan ipgeolocation.io");
+    }
+
+    // Fallback 2 (hanya dapat IP)
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      if (response.ok) {
+        const data = await response.json();
+        infoElement.textContent = `Dari lokasi tidak diketahui (${data.ip || 'IP tidak diketahui'})`;
+        return;
+      }
+    } catch (error) {
+      console.log("Gagal mendapatkan IP");
+    }
+
+    infoElement.textContent = "Gagal mendeteksi lokasi";
+  }
+
+  // Jalankan saat halaman dimuat
   window.onload = () => {
     typeWriter();
-    fetch("https://ipapi.co/json/")
-      .then(response => response.json())
-      .then(data => {
-        const locationText = `[ From You: ${data.city}, ${data.country_name} (${data.ip}) ]`;
-        document.getElementById("visitor-info").textContent = locationText;
-      })
-      .catch(() => {
-        document.getElementById("visitor-info").textContent = "Location unknown";
-      });
+    detectLocation();
   };
 </script>
-
 </body>
 </html>
