@@ -178,7 +178,7 @@
     fetch("https://api.ipify.org?format=json")
       .then(response => response.json())
       .then(data => {
-        const locationText = `[ From You: ${data.country_name} (${data.ip}) ]`;
+        const locationText = `[ From You: Indonesia (${data.ip}) ]`;
         document.getElementById("visitor-info").textContent = locationText;
       })
       .catch(() => {
