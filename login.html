@@ -37,7 +37,7 @@
     }
   </style>
   <!-- Load reCAPTCHA v3 API -->
-  <script src="https://www.google.com/recaptcha/api.js?render=6L1322crAAAAAM3_V9775bO8ap8GSkZfqpZJOFD"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ld_EWgrAAAAAL1YWgoUYjk8wg6REcSRt-HziCWI"></script>
 </head>
 <body>
 
@@ -72,7 +72,7 @@
     e.preventDefault();
     
     grecaptcha.ready(function() {
-      grecaptcha.execute('6L1322crAAAAAM3_V9775bO8ap8GSkZfqpZJOFD', {action: 'login'})
+      grecaptcha.execute('6Ld_EWgrAAAAAL1YWgoUYjk8wg6REcSRt-HziCWI', {action: 'login'})
         .then(function(token) {
           // Set token ke hidden input
           document.getElementById('g-recaptcha-response').value = token;
